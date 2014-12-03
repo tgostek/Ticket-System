@@ -2,28 +2,15 @@
 require_once __DIR__.'/../vendor/autoload.php';
 $app = new Silex\Application();
 $app['debug'] = true;
-$app->get('/hello/{name}', function ($name) use ($app) {
-    return 'Hello '.$app->escape($name);
-});
-$data = array(
-    0 => array(
-        'name' => 'John',
-        'email' => 'john@example.com',
-    ),
-    1 => array(
-        'name' => 'Mark',
-        'email' => 'mark@example.com',
-    ),
-);
 
-$app->get('/data', function () use ($data) {
-    $view = '';
-    foreach ($data as $row) {
-        $view .= $row['name'];
-        $view .= ' : ';
-        $view .= $row['email'];
-        $view .= '<br />';
-    }
-    return $view;
-});
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/../views',
+));
+$app->register(new Silex\Provider\FormServiceProvider());
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+    'translator.domains' => array(),
+));
+
+$app->mount('/', new Controller\IndexController());
 $app->run();
