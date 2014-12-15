@@ -1,0 +1,20 @@
+{% extends 'base.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <div class="register-header">
+        <h1>
+            Registration
+        </h1>
+
+        <p>
+            Do you have an account ? <a href="{{ url('/auth/login')}}" title="Register">Login!</a>
+        </p>
+    </div>
+    <div class="register-container">
+        <form action="{{ url('/auth/register')}}" method="post">
+            {{ form_widget(form) }}
+        </form>
+    </div>
+{% endblock %}

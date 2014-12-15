@@ -1,0 +1,101 @@
+.content {
+    clear: both;
+    padding-bottom: 25px;
+    padding-top: 5px;
+}
+.ticket-panel {
+	float: left;
+	margin-left: 25px;
+	width: 905px;
+}
+.owner-panel,
+.author-panel {
+	float: left;
+	margin-right: 30px;
+	width: 430px;
+}
+.date-panel,
+.priority-panel,
+.queue-panel,
+.status-panel {
+	float: left;
+	margin-right: 15px;
+	width: 215px;
+}
+.author-panel,
+.date-panel {
+	margin-left: 25px;
+}
+.get-ticket {
+	float: right;
+	margin-right: 50px;
+}
+.comments-container .jumbotron {
+	margin-left: 25px;
+	position: relative;
+	width: 905px;
+}
+.comments-container .jumbotron .author {
+	left: 0;
+	position: absolute;
+	top: 0;
+}
+.comments-container .jumbotron .date {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.comments-container .jumbotron .date a,
+.comments-container .jumbotron .author a {
+	color: #ffffff;
+}
+.user-header,
+.user-container,
+.ticket-container,
+.register-container,
+.login-container,
+.register-header,
+.login-header,
+.edit-ticket-header {
+	width: 300px;
+	margin: 0 auto;
+}
+.ticket-header {
+	width: 390px;
+	margin: 0 auto;
+}
+.ticket-container .btn,
+.register-container .btn,
+.login-container .btn {
+	float: right;
+	margin-right: 25px;
+	margin-top: 25px;
+}
+.container {
+	width: 100px;
+}
+.comments-container {
+    clear: both;
+}
+.comments-container label{
+    display: none;
+}
+.comments-container textarea.form-control {
+    height: auto;
+    margin: 0 auto;
+    width: 500px;
+}
+.comments-container .btn {
+    margin-left: 41%;
+    margin-top: 22px;
+}
+.btn-group.btn-group-justified {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.dropdown.right {
+	float: right;
+}
+.alert.alert-error {
+	background-color: #d9534f; 
+}

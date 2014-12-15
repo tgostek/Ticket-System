@@ -25,6 +25,7 @@ class IndexController implements ControllerProviderInterface
         return 'Tu powinna być strona główna';
     }
 
+
     public function add(Application $app, Request $request)
     {
 
