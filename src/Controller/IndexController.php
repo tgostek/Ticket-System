@@ -15,5 +15,10 @@ class IndexController implements ControllerProviderInterface
         return $indexController;
     }
 
+    public function index(Application $app)
+    {
+        return 'Tu powinna być strona główna';
+    }
+
 
 }

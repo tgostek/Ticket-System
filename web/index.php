@@ -24,7 +24,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 
-$app->mount('/tickets/', new Controller\IndexController());
+$app->mount('/', new Controller\IndexController());
 $app->mount('/auth/', new Controller\AuthController());
 
 $app->run();
