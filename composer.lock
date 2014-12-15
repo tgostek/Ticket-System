@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "83a2a85cf66ed78fba8a2ca538e31856",
+    "hash": "6d897fd7c8d80612bcdb4e88633b47f4",
     "packages": [
         {
             "name": "doctrine/common",
@@ -997,36 +997,48 @@
             "time": "2014-12-02 20:15:53"
         },
         {
-            "name": "symfony/security-core",
+            "name": "symfony/security",
             "version": "v2.6.1",
-            "target-dir": "Symfony/Component/Security/Core",
+            "target-dir": "Symfony/Component/Security",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/security-core.git",
-                "reference": "b81e26339eb2ad85b308217199d43a7c25948bc3"
+                "url": "https://github.com/symfony/Security.git",
+                "reference": "95579d91a123f8b2af6709bcf1e4b2157a65c6ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/b81e26339eb2ad85b308217199d43a7c25948bc3",
-                "reference": "b81e26339eb2ad85b308217199d43a7c25948bc3",
+                "url": "https://api.github.com/repos/symfony/Security/zipball/95579d91a123f8b2af6709bcf1e4b2157a65c6ce",
+                "reference": "95579d91a123f8b2af6709bcf1e4b2157a65c6ce",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": "~2.1",
+                "symfony/http-foundation": "~2.1",
+                "symfony/http-kernel": "~2.4"
+            },
+            "replace": {
+                "symfony/security-acl": "self.version",
+                "symfony/security-core": "self.version",
+                "symfony/security-csrf": "self.version",
+                "symfony/security-http": "self.version"
             },
             "require-dev": {
-                "ircmaxell/password-compat": "1.0.*",
+                "doctrine/common": "~2.2",
+                "doctrine/dbal": "~2.2",
+                "ircmaxell/password-compat": "~1.0",
                 "psr/log": "~1.0",
-                "symfony/event-dispatcher": "~2.1",
                 "symfony/expression-language": "~2.4",
-                "symfony/http-foundation": "~2.4",
+                "symfony/routing": "~2.2",
                 "symfony/validator": "~2.5"
             },
             "suggest": {
+                "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
-                "symfony/event-dispatcher": "",
+                "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
-                "symfony/http-foundation": "",
+                "symfony/finder": "For using the ACL generateSql script",
+                "symfony/routing": "For using the HttpUtils class to create sub-requests, redirect the user, and match URLs",
                 "symfony/validator": "For using the user password constraint"
             },
             "type": "library",
@@ -1037,7 +1049,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Symfony\\Component\\Security\\Core\\": ""
+                    "Symfony\\Component\\Security\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1054,63 +1066,9 @@
                     "email": "fabien@symfony.com"
                 }
             ],
-            "description": "Symfony Security Component - Core Library",
+            "description": "Symfony Security Component",
             "homepage": "http://symfony.com",
             "time": "2014-12-02 20:19:20"
-        },
-        {
-            "name": "symfony/security-csrf",
-            "version": "v2.6.1",
-            "target-dir": "Symfony/Component/Security/Csrf",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/security-csrf.git",
-                "reference": "36b3be0e58508275571cf895ea76e7283b6f5358"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-csrf/zipball/36b3be0e58508275571cf895ea76e7283b6f5358",
-                "reference": "36b3be0e58508275571cf895ea76e7283b6f5358",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/security-core": "~2.4"
-            },
-            "require-dev": {
-                "symfony/http-foundation": "~2.1"
-            },
-            "suggest": {
-                "symfony/http-foundation": "For using the class SessionTokenStorage."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\Security\\Csrf\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "Symfony Security Component - CSRF Library",
-            "homepage": "http://symfony.com",
-            "time": "2014-11-28 10:00:40"
         },
         {
             "name": "symfony/translation",

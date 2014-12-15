@@ -20,5 +20,4 @@ class IndexController implements ControllerProviderInterface
         return 'Tu powinna być strona główna';
     }
 
-
 }

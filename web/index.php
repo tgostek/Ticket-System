@@ -4,7 +4,7 @@ $app = new Silex\Application();
 $app['debug'] = true;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'/../views',
+    'twig.path' => __DIR__.'/../src/views',
 ));
 $app->register(new Silex\Provider\FormServiceProvider());
 $app->register(new Silex\Provider\ValidatorServiceProvider());
@@ -21,10 +21,40 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'charset'   => 'utf8',
     ),
 ));
+$app->register(new Silex\Provider\SecurityServiceProvider(), array(
+    'security.firewalls' => array(
+        'admin' => array(
+            'pattern' => '^.*$',
+            'form' => array(
+                'login_path' => '/auth/login',
+                'check_path' => '/auth/login_check',
+                'default_target_path'=> '/',
+                'username_parameter' => 'form[username]',
+                'password_parameter' => 'form[password]',
+            ),
+            'logout'  => true,
+            'anonymous' => true,
+            'logout' => array('logout_path' => '/auth/logout'),
+            'users' => $app->share(function() use ($app) {
+                return new User\UserProvider($app);
+            }),
+        ),
+    ),
+    'security.access_rules' => array(
+        array('^/auth.+$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+        array('^/.+$', 'ROLE_USER'),
+        array('^/.+$', 'ROLE_ADMIN')
+    ),
+    'security.role_hierarchy' => array(
+        'ROLE_ADMIN' => array('ROLE_USER'),
+    ),
+));
+
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 
 $app->mount('/', new Controller\IndexController());
 $app->mount('/auth/', new Controller\AuthController());
+//echo $app['security.encoder.digest']->encodePassword('test123', '');
 
 $app->run();
