@@ -1,0 +1,22 @@
+{% extends 'base.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="login-header">
+        <h1>
+            Login !
+        </h1>
+
+        <p>
+            Don't have an account ? <a href="{{ url('/auth/register')}}" title="Register">Register now!</a>
+        </p>
+    </div>
+
+    <div class="login-container">
+        <form action="{{ path('login_check') }}" method="post">
+            {{ form_widget(form) }}
+        </form>
+    </div>
+
+{% endblock %}
