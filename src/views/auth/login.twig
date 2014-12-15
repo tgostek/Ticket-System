@@ -1,0 +1,12 @@
+{% extends 'base.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h1>
+        Login
+    </h1>
+    <form action="{{ url('/auth/login') }}" method="post">
+        {{ form_widget(form) }}
+    </form>
+{% endblock %}

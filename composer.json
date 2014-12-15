@@ -7,11 +7,13 @@
         "symfony/config": "~2.3",
         "symfony/translation": "~2.3",
         "symfony/locale": "~2.3",
-        "symfony/twig-bridge": "~2.3"
+        "symfony/twig-bridge": "~2.3",
+        "doctrine/dbal": "2.2.*"
     },
     "autoload": {
         "psr-0": {
-            "Controller" : "src/"
+            "Controller" : "src/",
+            "Model" : "src/"
         }
     }
 }
