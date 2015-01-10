@@ -73,46 +73,11 @@ $app->register(
     )
 );
 
-$app->register(
-    new Silex\Provider\TranslationServiceProvider(), array(
-    'locale_fallbacks' => array('pl_PL'),
-    )
-);
 
-$app['translator.domains'] = array(
-    'messages' => array(
-        'pl' => array(
-        'Bad credentials'     => 'Błędny login lub hasło',
-        'This value is too short. It should have 3 characters or more.' => 'Pole musi zawierać przynajmniej 3 znaki',
-        )
-    ),
-    'validators' => array(
-        'pl' => array(
-        'Bad credentials'     => 'Błędny login lub hasło',
-        'This value is too short. It should have 3 characters or more.' => 'Pole musi zawierać przynajmniej 3 znaki',
-        )
-    ),
-);
+
 $app->mount('/auth/', new Controller\AuthController());
 
 $app->mount('/tickets/', new Controller\TicketsController());
 $app->mount('/', new Controller\IndexController());
-
-$app->before(
-    function ($request) use ($app) {
-    $tmp = false;
-    $user = $app['session']->get('user');
-    
-    if (!empty($user)) {
-        $roles = $user['roles'];
-        foreach ($roles as $role) {
-            if ($role == 'ROLE_ADMIN') {
-                $tmp = true;
-            }
-        }
-    }
-    $app["twig"]->addGlobal("isAdmin", $tmp);
-    }
-);
 
 $app->run();

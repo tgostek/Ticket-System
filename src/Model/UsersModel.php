@@ -89,7 +89,7 @@ class UsersModel
      */
     public function getUserByLogin($login)
     {
-        $sql = 'SELECT * FROM USER WHERE USER_LOGIN = ?';
+        $sql = 'SELECT * FROM USER WHERE USR_LOGIN = ?';
         return $this->_db->fetchAssoc($sql, array((string) $login));
     }
 
@@ -103,18 +103,18 @@ class UsersModel
     {
         $sql = '
             SELECT 
-            	ROLE_NAME 
+            	ROL_VALUE
             FROM 
-            	USER, ROLE 
+            	USER, USER_ROLE
             WHERE
-                ROLE_ID = USER_ROLE AND USER_ID = ?
+                ROL_ID = ROL_USR_ROLE AND USR_ID = ?
             ';
 
         $result = $this->_db->fetchAll($sql, array((string) $userId));
 
         $roles = array();
         foreach ($result as $row) {
-            $roles[] = $row['ROLE_NAME'];
+            $roles[] = $row['ROL_VALUE'];
         }
 
         return $roles;
@@ -130,16 +130,16 @@ class UsersModel
     {
         $sql = '
             SELECT 
-            	ROLE_NAME 
+            	ROL_VALUE
             FROM 
-            	USER, ROLE 
+            	USER, USER_ROLE
             WHERE
-                ROLE_ID = USER_ROLE AND USER_ID = ?
+                ROL_ID = ROL_USR_ROLE AND USR_ID = ?
             ';
 
         $result = $this->_db->fetchAssoc($sql, array((string) $userId));
 
-        return $result['ROLE_NAME'];
+        return $result['ROL_VALUE'];
     }
     
     /**
@@ -156,7 +156,7 @@ class UsersModel
             FROM 
             	USER
             WHERE
-                USER_ID = ?
+                USR_ID = ?
             ';
         return $this->_db->fetchAssoc($sql, array((string) $idUser));
     }
@@ -175,7 +175,7 @@ class UsersModel
             return false;
         }
         $sql = 'INSERT INTO USER 
-               (USER_NAME, USER_SURNAME, USER_LOGIN, USER_PASSWORD) 
+               (USR_NAME, USR_SURNAME, USR_LOGIN, USR_PASSWORD)
                VALUES (?,?,?,?)';
         return $this
                ->_db
@@ -198,12 +198,12 @@ class UsersModel
      */
     public function checkUserExist($id)
     {
-        $sql = 'SELECT USER_ID FROM USER WHERE USER_ID = ?';
+        $sql = 'SELECT USR_ID FROM USER WHERE USR_ID = ?';
         $res = $this->_db->fetchAssoc($sql, array( $id));
         if (!$res) {
             return false;
         } else {
-            return $res['USER_ID'];
+            return $res['USR_ID'];
         }
     }
     
@@ -221,7 +221,7 @@ class UsersModel
         if ($login) {
             return false;
         }
-        $sql = 'UPDATE USER SET USER_PASSWORD = ? WHERE USER_ID = ?';
+        $sql = 'UPDATE USER SET USR_PASSWORD = ? WHERE USR_ID = ?';
         return $this->_db->executeQuery(
             $sql, array($data['password'], $idUser)
         );
