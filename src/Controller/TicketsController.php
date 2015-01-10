@@ -7,18 +7,22 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Model\TicketsModel;
+use Model\QueueDoesntExistException;
 /**
- * Class UsersController
+ * Class TicketsController
  *
- * @class UsersController
+ * @class TicketsController
  * @package Controller
  * @author Tomasz Gostek <tomasz.gostek@uj.edu.pl>
  * @uses Silex\Application
  * @uses Silex\ControllerProviderInterface
  * @uses Symfony\Component\HttpFoundation\Request
  * @uses Symfony\Component\Validator\Constraints as Assert
+ * @uses Model\TicketsModel
  */
-class IndexController implements ControllerProviderInterface
+ 
+class TicketsController implements ControllerProviderInterface
 {
     /**
      * Controller connect
@@ -29,22 +33,23 @@ class IndexController implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $ticketsController = $app['controllers_factory'];
-        $ticketsController->match('/', array($this, 'index'))->bind('/');
+        $ticketsController->match(
+            '/', array($this, 'index')
+        )->bind(
+            '/tickets/'
+        );
+
         return $ticketsController;
     }    
     
     /**
-     * User index page - redirect to main page.
+     * Tickets index page.
      *
      * @access public
      * @param Application $app
      */
     public function index(Application $app)
     {
-        return $app->redirect(
-            $app['url_generator']->generate('/tickets/'), 
-            301
-        );
+        return 'Index Action';
     }
-
 }
