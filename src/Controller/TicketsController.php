@@ -50,6 +50,7 @@ class TicketsController implements ControllerProviderInterface
      */
     public function index(Application $app)
     {
-        return 'Index Action';
+        return 'Index Action for logged user';
     }
+
 }

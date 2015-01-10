@@ -14,7 +14,7 @@
     </head>
     <body>
     	<header class="page-header">
-    		<h1>Tickets System</h1>
+    		<h1>System ticketowy</h1>
     	</header>
 
 		{% for flashMessage in app.session.getFlashBag.get('message') %}
@@ -22,7 +22,34 @@
 				{{ flashMessage.content }}
 			</div>
 		{% endfor %}
-
+		<ul class="nav nav-tabs" role="tablist">
+		  <li><a href="{{ url('/tickets/') }}">Strona Główna</a></li>
+		  <li><a href="{{ url('/tickets/add') }}">Dodaj ticketa</a></li>
+		  <li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			  Kolejki <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+			  <li><a href="{{ url('/tickets/queue/', {'queue' : 'frontend', 'page' : 1}) }}">Frontend</a></li>
+			  <li><a href="{{ url('/tickets/queue/', {'queue' : 'backend', 'page' : 1}) }}">Backend</a></li>
+			</ul>
+		  </li>
+		  {% if isAdmin %}
+			  <li><a href="{{ url('/tickets/queue/add') }}">Dodaj kolejkę</a></li>
+		  {% endif %}
+			  <li><a href="{{ url('/tickets/search') }}">Szukaj</a></li>
+		  {% if app.session.get('user') %} 
+			  <li class="dropdown right">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				  {{app.session.get('user')['login']}}   <span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" role="menu">
+				  <li><a href="{{ url('/auth/change/password') }}">Zmień hasło</a></li>
+				  <li><a href="{{ url('/auth/logout') }}">Wyloguj się</a></li>
+				</ul>
+			  </li>
+		  {% endif %}
+		</ul>
         <div class="content" id="content">{% block content %}{% endblock %}</div>
     </body>
 </html>

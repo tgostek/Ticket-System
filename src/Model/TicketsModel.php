@@ -35,6 +35,4 @@ class TicketsModel
     {
         $this->_db = $app['db'];
     }
-    
-
 }
