@@ -35,4 +35,11 @@ class TicketsModel
     {
         $this->_db = $app['db'];
     }
+
+    public function addTicket($data)
+    {
+        $sql = 'INSERT INTO TICKET (TCK_CREATION_DATE, TCK_CLOSED_DATE, TCK_TITLE, TCK_DESC, USR_TCK_OWNER, USR_TCK_AUTHOR, STS_TCK_STATUS, PRT_TCK_PRIORITY, QUE_QUEUE) VALUES (?,?,?,?,?,?,?,?,?,?)';
+        return $this->_db->executeQuery($sql, array(NOW(), NOW(), $data['title'], $data['description'], 1,1,1, $data['priority'], $data['queue']));
+    }
+
 }
