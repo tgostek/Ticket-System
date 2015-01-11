@@ -1,15 +1,15 @@
 {% extends 'layout.twig' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Sign in{% endblock %}
 
 {% block content %}
 	<div class="login-header">
 		<h1>
-        Zaloguj się !
+       Sign in!
 		</h1>
 		
 		 <p>
-			Nie masz jeszcze konta ? <a href="{{ url('/auth/register')}}" title="Register">Załóż je!</a>
+			Don't have an account ? <a href="{{ url('/auth/register')}}" title="Register">Create it!</a>
 		</p>
 	</div>
     {{ error|trans }}

@@ -14,8 +14,33 @@
     </head>
     <body>
     	<header class="page-header">
-    		<h1>System ticketowy</h1>
+    		<h1>Tickets system</h1>
     	</header>
+        <ul class="nav nav-tabs" role="tablist">
+            <li><a href="#">Main page</a></li>
+            <li><a href="#">Add ticket</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    Queues <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Frontend</a></li>
+                    <li><a href="#">Backend</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Admin panel</a></li>
+            {% if app.session.get('user') %}
+                <li class="dropdown right">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{app.session.get('user')['login']}}   <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ url('/auth/change/password') }}">Change password</a></li>
+                        <li><a href="{{ url('/auth/logout') }}">Log out</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
 
 		{% for flashMessage in app.session.getFlashBag.get('message') %}
 			<div class="alert alert-{{ flashMessage.type }}">
