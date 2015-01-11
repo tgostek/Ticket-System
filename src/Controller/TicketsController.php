@@ -75,12 +75,8 @@ class TicketsController implements ControllerProviderInterface
 
         $ticketsModel = new TicketsModel($app);
         try {
-            //$priorities = $ticketsModel->getPossiblePriorities();
-            //$queues = $ticketsModel->getPossibleQueues();
-
-            $priorities = array();
-            $queues = array();
-
+            $priorities = $ticketsModel->getPossiblePriorities();
+            $queues = $ticketsModel->getPossibleQueues();
         } catch (Exception $e) {
             $app['session']
                 ->getFlashBag()
