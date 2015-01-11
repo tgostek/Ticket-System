@@ -248,3 +248,44 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `TICKET_SYSTEM`.`ROLE`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `TICKET_SYSTEM`;
+INSERT INTO `TICKET_SYSTEM`.`ROLE` (`ROLE_ID`, `ROLE_NAME`) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO `TICKET_SYSTEM`.`ROLE` (`ROLE_ID`, `ROLE_NAME`) VALUES (2, 'ROLE_USER');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `TICKET_SYSTEM`.`STATUS`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `TICKET_SYSTEM`;
+INSERT INTO `TICKET_SYSTEM`.`STATUS` (`STS_ID`, `STS_VALUE`, `STS_IS_CLOSED`) VALUES (NULL, 'Test', 0);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `TICKET_SYSTEM`.`PRIORITY`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `TICKET_SYSTEM`;
+INSERT INTO `TICKET_SYSTEM`.`PRIORITY` (`PRT_ID`, `PRT_VALUE`) VALUES (1, 'Test');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `TICKET_SYSTEM`.`QUEUE`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `TICKET_SYSTEM`;
+INSERT INTO `TICKET_SYSTEM`.`QUEUE` (`QUE_ID`, `QUE_NAME`) VALUES (1, 'Test');
+
+COMMIT;
+
