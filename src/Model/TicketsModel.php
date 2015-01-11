@@ -62,28 +62,48 @@ class TicketsModel
         }
     }
 
-    public function getPriorities(){
-        $sql = 'SELECT * FROM PRIORITY';
-        $result = $this->_db->fetchAll($sql);
+/**
+* Get possible priorities.
+*
+* @access public
+*/
+    public function getPossiblePriorities()
+    {
+        $sql = 'SELECT
+                    *
+                FROM
+                    PRIORITY';
+
+        $res = $this->_db->fetchAll($sql);
 
         $priorities = array();
-        foreach($result as $row){
-            $priorities[] = $row['PRT_VALUE'];
-        }
 
+        foreach ($res as $priority) {
+            $priorities[$priority['PRT_ID']] = $priority['PRT_VALUE'];
+        }
         return $priorities;
     }
 
-    public function getQueue(){
-        $sql = 'SELECT * FROM QUEUE';
-        $result = $this->_db->fetchAll($sql);
+    /**
+     * Get possible queues.
+     *
+     * @access public
+     */
+    public function getPossibleQueues()
+    {
+        $sql = 'SELECT
+                    *
+                FROM
+                    QUEUE';
 
-        $queue = array();
-        foreach($result as $row){
-            $queue[] = $row['QUE_NAME'];
+        $res = $this->_db->fetchAll($sql);
+
+        $queues = array();
+
+        foreach ($res as $queue) {
+            $queues[$queue['QUE_ID']] = $queue['QUE_NAME'];
         }
-
-        return $queue;
+        return $queues;
     }
 
 }
