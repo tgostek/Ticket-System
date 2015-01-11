@@ -1,0 +1,16 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Create new ticket{% endblock %}
+
+{% block content %}
+    <div class="ticket-header">
+        <h1>
+            Create new ticket
+        </h1>
+    </div>
+    <div class="ticket-container">
+        <form action="#" method="post">
+            {{ form_widget(form) }}
+        </form>
+    </div>
+{% endblock %}
