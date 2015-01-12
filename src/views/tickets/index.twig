@@ -5,7 +5,7 @@
 {% block content %}
     <section>
         <div class="container">
-            <span class="label label-info">All tickets</span>
+            <span class="label label-info">Tickety bez właściciela</span>
             {%  if allTickets|length > 0 %}
                 <table class="table">
                     <thead>
@@ -20,7 +20,7 @@
                     {% for ticket in allTickets %}
                         <tr>
                             <td>{{ ticket.TCK_CREATION_DATE|e }}</td>
-                            <td><a href="#" title="Zobacz ticketa">{{ ticket.TCK_TITLE|length > 30 ? ticket.TCK_TITLE|slice(0, 30) ~ '...' : ticket.TCK_TITLE  }}</a></td>
+                            <td><a href="{{ url('/tickets/view/', {'id': ticket.TCK_ID}) }}" title="Zobacz ticketa">{{ ticket.TCK_TITLE|length > 30 ? ticket.TCK_TITLE|slice(0, 30) ~ '...' : ticket.TCK_TITLE  }}</a></td>
                             <td>{{ ticket.TCK_CREATION_DATE|e }}</td>
                             <td>{{ ticket.TCK_CREATION_DATE|e }}</td>
                         </tr>

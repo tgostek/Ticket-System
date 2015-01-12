@@ -45,13 +45,21 @@ class TicketsController implements ControllerProviderInterface
         )->bind(
             '/tickets/add'
         );
-        return $ticketsController;
+
+        $ticketsController->match(
+            '/core', array($this, 'core')
+        )->bind(
+            '/tickets/core'
+        );
+
 
         $ticketsController->match(
             '/view/{id}', array($this, 'view')
         )->bind(
             '/tickets/view/'
         );
+
+        return $ticketsController;
     }    
     
     /**
@@ -193,6 +201,10 @@ class TicketsController implements ControllerProviderInterface
     }
 
     public function view(Application $app, Request $request) {
+
+    }
+
+    public function core(Application $app, Request $request) {
 
     }
 }
