@@ -41,6 +41,30 @@ class TicketsModel
         $this->_db = $app['db'];
     }
 
+    public function getTicket($id)
+    {
+        $sql = '
+              SELECT
+                  *
+              FROM
+                  TICKET
+              INNER JOIN
+                  QUEUE ON TICKET.QUE_QUEUE = QUEUE.QUE_ID
+              INNER JOIN
+                  PRIORITY ON TICKET.PRT_TCK_PRIORITY = PRIORITY.PRT_ID
+              INNER JOIN
+                  STATUS ON TICKET.STS_TCK_STATUS = STATUS.STS_ID
+              WHERE
+                  TCK_ID = ?
+              ';
+
+        $res = $this->_db->fetchAll($sql, array((string) $id));
+        if (empty($res)) {
+            throw new TicketException('Ticket doesn\'t exist');
+        }
+        return $res;
+    }
+
     public function getAllTickets()
     {
         $sql = '

@@ -68,7 +68,7 @@ $app->register(
     'security.access_rules' => array(
         array('^/auth.+$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
         array('^/.+$', 'ROLE_USER'),
-        array('^/.+$', 'ROLE_ADMIN')
+        array('^/tickets/core.+$', 'ROLE_ADMIN')
     ),
     'security.role_hierarchy' => array(
         'ROLE_ADMIN' => array('ROLE_USER'),

@@ -202,7 +202,15 @@ class TicketsController implements ControllerProviderInterface
     }
 
     public function view(Application $app, Request $request) {
+        $ticketsModel = new TicketsModel($app);
+        $id = (int) $request->get('id', 0);
 
+        $ticket = $ticketsModel->getTicket($id);
+
+        return $app['twig']->render(
+            'tickets/view.twig',
+            array('ticket' => $ticket[0])
+        );
     }
 
     public function core(Application $app, Request $request) {
