@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Model\TicketsModel;
+use Model\UsersModel;
 use Model\QueueDoesntExistException;
 /**
  * Class TicketsController
@@ -206,6 +207,28 @@ class TicketsController implements ControllerProviderInterface
 
     public function core(Application $app, Request $request) {
         $ticketsModel = new TicketsModel($app);
+        $usersModel = new UsersModel($app);
+
+        $id = $app['session']->get('user');
+        $id = $id['id'];
+
+        if($usersModel->getUserRole($id) != 'ROLE_ADMIN') {
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'error',
+                        'content' => 'Access denied'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate('/tickets/'),
+                301
+            );
+        }
+
 
         $statuses = $ticketsModel->getPossibleStatuses();
 
