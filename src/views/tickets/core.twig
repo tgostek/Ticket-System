@@ -1,0 +1,23 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+    <span class="label label-info">Statuses</span>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Status ID</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for status in statuses %}
+            <tr>
+                <td>{{ status.STS_ID|e }}</td>
+                <td>{{ status.STS_VALUE|e }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

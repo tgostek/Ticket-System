@@ -152,4 +152,25 @@ class TicketsModel
         return $queues;
     }
 
+    public function getPossibleStatuses()
+    {
+        $sql = 'SELECT
+                    *
+                FROM
+                    STATUS';
+
+        return $this->_db->fetchAll($sql);
+    }
+
+    public function addStatus($data)
+    {
+        if(empty($data)) {
+            throw new TicketException();
+        }else{
+            $date = date('Y-m-d H:i:s');
+
+            $sql = 'INSERT INTO STATUS (STS_VALUE, STS_IS_CLOSED) VALUES (?,?)';
+            return $this->_db->executeQuery($sql, array($data['value'], $data['isClosed']));
+        }
+    }
 }

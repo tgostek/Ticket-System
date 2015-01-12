@@ -205,6 +205,33 @@ class TicketsController implements ControllerProviderInterface
     }
 
     public function core(Application $app, Request $request) {
+        $ticketsModel = new TicketsModel($app);
 
+        $statuses = $ticketsModel->getPossibleStatuses();
+
+        /*$statusForm = $app['form.factory']->createBuilder('form', $data)
+            ->add(
+                'value', 'text', array(
+                    'label' => 'Value',
+                    'attr' => array('class'=>'form-control'),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 3))
+                    )
+                )
+            )
+            ->add(
+                'Create', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+
+        $ticketsModel->addStatus($data);*/
+
+        return $app['twig']->render(
+            'tickets/core.twig',
+            array('statuses' => $statuses)
+        );
     }
 }
