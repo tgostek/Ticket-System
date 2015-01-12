@@ -69,6 +69,20 @@ class TicketsModel
         return $this->_db->fetchAll($sql, array((string) $authorId));
     }
 
+    public function getOwnersTickets($ownerId)
+    {
+        $sql = '
+            SELECT
+            	*
+            FROM
+            	TICKET
+            WHERE
+                USR_TCK_OWNER = ?
+            ';
+
+        return $this->_db->fetchAll($sql, array((string) $ownerId));
+    }
+
     public function addTicket($data, $userId)
     {
         if(empty($data)) {
