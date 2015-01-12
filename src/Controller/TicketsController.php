@@ -53,6 +53,12 @@ class TicketsController implements ControllerProviderInterface
             '/tickets/core'
         );
 
+        $ticketsController->match(
+            '/core/addStatus', array($this, 'addStatus')
+        )->bind(
+            '/tickets/core/addStatus'
+        );
+
 
         $ticketsController->match(
             '/view/{id}', array($this, 'view')
@@ -73,7 +79,7 @@ class TicketsController implements ControllerProviderInterface
     {
         $ticketsModel = new TicketsModel($app);
         $allTickets = $ticketsModel->getAllTickets();
-        
+
         return $app['twig']->render(
             'tickets/index.twig',
             array('allTickets' => $allTickets)
@@ -240,7 +246,18 @@ class TicketsController implements ControllerProviderInterface
 
         $statuses = $ticketsModel->getPossibleStatuses();
 
-        /*$statusForm = $app['form.factory']->createBuilder('form', $data)
+        return $app['twig']->render(
+            'tickets/core.twig',
+            array('statuses' => $statuses)
+        );
+    }
+
+    public function addStatus(Application $app, Request $request)
+    {
+        $ticketsModel = new TicketsModel($app);
+
+        $statusData = array();
+        $statusForm = $app['form.factory']->createBuilder('form', $statusData)
             ->add(
                 'value', 'text', array(
                     'label' => 'Value',
@@ -252,17 +269,60 @@ class TicketsController implements ControllerProviderInterface
                 )
             )
             ->add(
+                'isClosed', 'checkbox', array(
+                    'label' => 'Is Closed',
+                    'attr' => array('class'=>'form-control'),
+                    'required'  => false
+                )
+            )
+            ->add(
                 'Create', 'submit', array(
                     'attr' => array('class'=>'btn btn-default btn-lg')
                 )
             )
             ->getForm();
 
-        $ticketsModel->addStatus($data);*/
+        $statusForm->handleRequest($request);
+
+        if ($statusForm->isValid()) {
+            $statusData = $statusForm->getData();
+            try {
+                $ticketsModel->addStatus($statusData);
+            } catch (Exception $e) {
+                $app['session']
+                    ->getFlashBag()
+                    ->add(
+                        'message',
+                        array(
+                            'type' => 'error',
+                            'content' => 'Ups.. Something is wrong.'
+                        )
+                    );
+                return $app->redirect(
+                    $app['url_generator']->generate('/tickets/'),
+                    301
+                );
+            }
+
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'Created new status'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate('/tickets/core'),
+                301
+            );
+        }
 
         return $app['twig']->render(
-            'tickets/core.twig',
-            array('statuses' => $statuses)
+            'tickets/addStatus.twig',
+            array('statusForm' => $statusForm->createView())
         );
     }
 }
