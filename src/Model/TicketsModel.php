@@ -48,6 +48,10 @@ class TicketsModel
                   *
               FROM
                   TICKET
+              INNER JOIN
+                  QUEUE ON TICKET.QUE_QUEUE = QUEUE.QUE_ID
+              INNER JOIN
+                  PRIORITY ON TICKET.PRT_TCK_PRIORITY = PRIORITY.PRT_ID
               ';
 
         $res = $this->_db->fetchAll($sql);
