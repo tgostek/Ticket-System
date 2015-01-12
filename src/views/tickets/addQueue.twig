@@ -1,0 +1,16 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Admin Panel - Create new Queue{% endblock %}
+
+{% block content %}
+    <div class="status-header">
+        <h1>
+            Create new queue
+        </h1>
+    </div>
+    <div class="status-container">
+        <form action="#" method="post">
+            {{ form_widget(queueForm) }}
+        </form>
+    </div>
+{% endblock %}

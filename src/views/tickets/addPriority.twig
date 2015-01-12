@@ -1,0 +1,16 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Admin Panel - Create new Priority{% endblock %}
+
+{% block content %}
+    <div class="status-header">
+        <h1>
+            Create new priority
+        </h1>
+    </div>
+    <div class="status-container">
+        <form action="#" method="post">
+            {{ form_widget(priorityForm) }}
+        </form>
+    </div>
+{% endblock %}

@@ -3,7 +3,9 @@
 {% block title %}Admin Panel{% endblock %}
 
 {% block content %}
+    </br></br>
     <span class="label label-info">Statuses</span>
+    <button type="button" class="btn btn-default core-group"><a href="{{ url('/tickets/core/addStatus') }}">Create new status</a></button>
     <table class="table">
         <thead>
         <tr>
@@ -20,5 +22,42 @@
         {% endfor %}
         </tbody>
     </table>
-    <li><a href="{{ url('/tickets/core/addStatus') }}">Create new status</a></li>
+
+    <span class="label label-info">Priorities</span>
+    <button type="button" class="btn btn-default core-group"><a href="{{ url('/tickets/core/addPriority') }}">Create new priority</a></button>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Priority ID</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for priority in priorities %}
+            <tr>
+                <td>{{ priority.PRT_ID|e }}</td>
+                <td>{{ priority.PRT_VALUE|e }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <span class="label label-info">Queues</span>
+    <button type="button" class="btn btn-default core-group"><a href="{{ url('/tickets/core/addQueue') }}">Create new queue</a></button>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Queue ID</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for queue in queues %}
+            <tr>
+                <td>{{ queue.QUE_ID|e }}</td>
+                <td>{{ queue.QUE_NAME|e }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

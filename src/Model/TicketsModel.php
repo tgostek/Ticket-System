@@ -154,6 +154,16 @@ class TicketsModel
         return $priorities;
     }
 
+    public function getPriorities()
+    {
+        $sql = 'SELECT
+                    *
+                FROM
+                    PRIORITY';
+
+        return $this->_db->fetchAll($sql);
+    }
+
     /**
      * Get possible queues.
      *
@@ -176,7 +186,17 @@ class TicketsModel
         return $queues;
     }
 
-    public function getPossibleStatuses()
+    public function getQueues()
+    {
+        $sql = 'SELECT
+                    *
+                FROM
+                    QUEUE';
+
+        return $this->_db->fetchAll($sql);
+    }
+
+    public function getStatuses()
     {
         $sql = 'SELECT
                     *
@@ -191,10 +211,28 @@ class TicketsModel
         if(empty($data)) {
             throw new TicketException();
         }else{
-            $date = date('Y-m-d H:i:s');
-
             $sql = 'INSERT INTO STATUS (STS_VALUE, STS_IS_CLOSED) VALUES (?,?)';
             return $this->_db->executeQuery($sql, array($data['value'], $data['isClosed']));
+        }
+    }
+
+    public function addPriority($data)
+    {
+        if(empty($data)) {
+            throw new TicketException();
+        }else{
+            $sql = 'INSERT INTO PRIORITY (PRT_VALUE) VALUES (?)';
+            return $this->_db->executeQuery($sql, array($data['value']));
+        }
+    }
+
+    public function addQueue($data)
+    {
+        if(empty($data)) {
+            throw new TicketException();
+        }else{
+            $sql = 'INSERT INTO QUEUE (QUE_NAME) VALUES (?)';
+            return $this->_db->executeQuery($sql, array($data['name']));
         }
     }
 }

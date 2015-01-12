@@ -59,6 +59,17 @@ class TicketsController implements ControllerProviderInterface
             '/tickets/core/addStatus'
         );
 
+        $ticketsController->match(
+            '/core/addPriority', array($this, 'addPriority')
+        )->bind(
+            '/tickets/core/addPriority'
+        );
+
+        $ticketsController->match(
+            '/core/addQueue', array($this, 'addQueue')
+        )->bind(
+            '/tickets/core/addQueue'
+        );
 
         $ticketsController->match(
             '/view/{id}', array($this, 'view')
@@ -244,11 +255,13 @@ class TicketsController implements ControllerProviderInterface
         }
 
 
-        $statuses = $ticketsModel->getPossibleStatuses();
+        $statuses = $ticketsModel->getStatuses();
+        $priorities = $ticketsModel->getPriorities();
+        $queues = $ticketsModel->getQueues();
 
         return $app['twig']->render(
             'tickets/core.twig',
-            array('statuses' => $statuses)
+            array('statuses' => $statuses, 'priorities' => $priorities, 'queues' => $queues)
         );
     }
 
@@ -323,6 +336,140 @@ class TicketsController implements ControllerProviderInterface
         return $app['twig']->render(
             'tickets/addStatus.twig',
             array('statusForm' => $statusForm->createView())
+        );
+    }
+
+    public function addPriority(Application $app, Request $request)
+    {
+        $ticketsModel = new TicketsModel($app);
+
+        $priorityData = array();
+        $priorityForm = $app['form.factory']->createBuilder('form', $priorityData)
+            ->add(
+                'value', 'text', array(
+                    'label' => 'Value',
+                    'attr' => array('class'=>'form-control'),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 3))
+                    )
+                )
+            )
+            ->add(
+                'Create', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+
+        $priorityForm->handleRequest($request);
+
+        if ($priorityForm->isValid()) {
+            $priorityData = $priorityForm->getData();
+            try {
+                $ticketsModel->addPriority($priorityData);
+            } catch (Exception $e) {
+                $app['session']
+                    ->getFlashBag()
+                    ->add(
+                        'message',
+                        array(
+                            'type' => 'error',
+                            'content' => 'Ups.. Something is wrong.'
+                        )
+                    );
+                return $app->redirect(
+                    $app['url_generator']->generate('/tickets/'),
+                    301
+                );
+            }
+
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'Created new priority'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate('/tickets/core'),
+                301
+            );
+        }
+
+        return $app['twig']->render(
+            'tickets/addPriority.twig',
+            array('priorityForm' => $priorityForm->createView())
+        );
+    }
+
+    public function addQueue(Application $app, Request $request)
+    {
+        $ticketsModel = new TicketsModel($app);
+
+        $queueData = array();
+        $queueForm = $app['form.factory']->createBuilder('form', $queueData)
+            ->add(
+                'name', 'text', array(
+                    'label' => 'Value',
+                    'attr' => array('class'=>'form-control'),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 3))
+                    )
+                )
+            )
+            ->add(
+                'Create', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+
+        $queueForm->handleRequest($request);
+
+        if ($queueForm->isValid()) {
+            $queueData = $queueForm->getData();
+            try {
+                $ticketsModel->addQueue($queueData);
+            } catch (Exception $e) {
+                $app['session']
+                    ->getFlashBag()
+                    ->add(
+                        'message',
+                        array(
+                            'type' => 'error',
+                            'content' => 'Ups.. Something is wrong.'
+                        )
+                    );
+                return $app->redirect(
+                    $app['url_generator']->generate('/tickets/'),
+                    301
+                );
+            }
+
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'Created new queue'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate('/tickets/core'),
+                301
+            );
+        }
+
+        return $app['twig']->render(
+            'tickets/addQueue.twig',
+            array('queueForm' => $queueForm->createView())
         );
     }
 }
