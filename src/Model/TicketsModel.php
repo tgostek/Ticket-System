@@ -41,6 +41,15 @@ class TicketsModel
         $this->_db = $app['db'];
     }
 
+    public function getAllTickets()
+    {
+        $sql = 'SELECT * FROM TICKET';
+
+        $res = $this->_db->fetchAll($sql);
+
+        return $res;
+    }
+
     public function addTicket($data, $userId)
     {
         if(empty($data)) {
