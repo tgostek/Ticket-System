@@ -46,6 +46,12 @@ class TicketsController implements ControllerProviderInterface
             '/tickets/add'
         );
         return $ticketsController;
+
+        $ticketsController->match(
+            '/view/{id}', array($this, 'view')
+        )->bind(
+            '/tickets/view/'
+        );
     }    
     
     /**
@@ -56,9 +62,13 @@ class TicketsController implements ControllerProviderInterface
      */
     public function index(Application $app)
     {
+        $ticketsModel = new TicketsModel($app);
+        $allTickets = $ticketsModel->getAllTickets();
+
         return $app['twig']->render(
-            'tickets/index.twig'
-        );
+            'tickets/index.twig',
+            array('allTickets' => $allTickets)
+            );
     }
 
     /**
@@ -180,5 +190,9 @@ class TicketsController implements ControllerProviderInterface
             'tickets/add.twig',
             array('form' => $form->createView())
         );
+    }
+
+    public function view(Application $app, Request $request) {
+
     }
 }

@@ -3,5 +3,35 @@
 {% block title %}Ticket system{% endblock %}
 
 {% block content %}
-    Index
+    <section>
+        <div class="container">
+            <span class="label label-info">All tickets</span>
+            {%  if allTickets|length > 0 %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Creation date</th>
+                        <th>Title</th>
+                        <th>Priority</th>
+                        <th>Queue</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ticket in allTickets %}
+                        <tr>
+                            <td>{{ ticket.TCK_CREATION_DATE|e }}</td>
+                            <td><a href="#" title="Zobacz ticketa">{{ ticket.TCK_TITLE|length > 30 ? ticket.TCK_TITLE|slice(0, 30) ~ '...' : ticket.TCK_TITLE  }}</a></td>
+                            <td>{{ ticket.TCK_CREATION_DATE|e }}</td>
+                            <td>{{ ticket.TCK_CREATION_DATE|e }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>
+                    Brak wolnych ticketów.
+                </p>
+            {% endif %}
+        </div>
+    </section>
 {% endblock %}
