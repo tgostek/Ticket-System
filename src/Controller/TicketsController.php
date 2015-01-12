@@ -72,7 +72,7 @@ class TicketsController implements ControllerProviderInterface
     {
         $ticketsModel = new TicketsModel($app);
         $allTickets = $ticketsModel->getAllTickets();
-
+        
         return $app['twig']->render(
             'tickets/index.twig',
             array('allTickets' => $allTickets)
