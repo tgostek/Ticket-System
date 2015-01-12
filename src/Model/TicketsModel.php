@@ -43,11 +43,30 @@ class TicketsModel
 
     public function getAllTickets()
     {
-        $sql = 'SELECT * FROM TICKET';
+        $sql = '
+              SELECT
+                  *
+              FROM
+                  TICKET
+              ';
 
         $res = $this->_db->fetchAll($sql);
 
         return $res;
+    }
+
+    public function getAuthorsTickets($authorId)
+    {
+        $sql = '
+            SELECT
+            	*
+            FROM
+            	TICKET
+            WHERE
+                USR_TCK_AUTHOR = ?
+            ';
+
+        return $this->_db->fetchAll($sql, array((string) $authorId));
     }
 
     public function addTicket($data, $userId)
