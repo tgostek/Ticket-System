@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Model\TicketsModel;
 use Model\UsersModel;
+use Model\FilesModel;
 use Model\QueueDoesntExistException;
 /**
  * Class TicketsController
@@ -166,6 +167,11 @@ class TicketsController implements ControllerProviderInterface
                     'constraints' => array(new Assert\NotBlank())
                 )
             )
+            ->add('file', 'file', array(
+                'label' => 'Choose file',
+                'constraints' => array(new Assert\Image()),
+                'required' => false
+            ))
             ->add(
                 'Create', 'submit', array(
                     'attr' => array('class'=>'btn btn-default btn-lg')
@@ -180,7 +186,18 @@ class TicketsController implements ControllerProviderInterface
             try {
                 $userId = $app['session']->get('user');
                 $userId = $userId['id'];
-                $ticketsModel->addTicket($data, $userId);
+                $ticketId = $ticketsModel->addTicket($data, $userId);
+
+                $files = $request->files->get($form->getName());
+                $path = dirname(dirname(dirname(__FILE__))).'/web/media';
+
+                $filesModel = new FilesModel($app);
+                $originalFilename = $files['file']->getClientOriginalName();
+                $newFilename = $filesModel->createName($originalFilename);
+
+                $files['file']->move($path, $newFilename);
+                $fileId = $filesModel->saveFile($newFilename);
+                $filesModel->addFileToTicket($fileId,$ticketId);
             } catch (Exception $e) {
                 $app['session']
                     ->getFlashBag()

@@ -9,7 +9,7 @@
         </h1>
     </div>
     <div class="ticket-container">
-        <form action="#" method="post">
+        <form action="#" {{ form_enctype(form) }} method="post">
             {{ form_widget(form) }}
         </form>
     </div>
