@@ -60,6 +60,23 @@
         <div class="page-header">
             <h1><small>Discussion</small></h1>
         </div>
+        {%  if comments|length > 0 %}
 
+            {% for comment in comments %}
+                <div class="jumbotron">
+                    <span class="author label label-default"><a href="#" >{{ comment.USER_NAME|e }} {{ comment.USER_SURNAME|e }}</a></span>
+                    <span class="date label label-primary">{{ comment.CMT_CREATION_DATE|e }}</span>
+                    <p>{{ comment.CMT_VALUE }}</p>
+                </div>
+            {% endfor %}
+
+        {% else %}
+            <p>
+                There are no comments
+            </p>
+        {% endif %}
+        <form action="#" method="post">
+            {{ form_widget(form) }}
+        </form>
     </div>
 {% endblock %}

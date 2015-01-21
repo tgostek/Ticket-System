@@ -237,4 +237,27 @@ class TicketsModel
             return $this->_db->executeQuery($sql, array($data['name']));
         }
     }
+
+    public function addComment($data, $idUser, $idTicket)
+    {
+        $date = date('Y-m-d H:i:s');
+        $sql = 'INSERT INTO COMMENT
+                (CMT_VALUE, CMT_CREATION_DATE, TCK_CMT_TICKET, USR_CMT_AUTHOR)
+                VALUES (?,?,?,?)';
+        $this->_db->executeQuery(
+            $sql, array($data['comment'], $date, $idTicket, $idUser)
+        );
+    }
+
+    public function getComments($idTicket)
+    {
+        $sql = 'SELECT
+                    CMT_CREATION_DATE, CMT_VALUE,
+                    USER_ID, USER_NAME, USER_SURNAME
+                FROM
+                    COMMENT, USER
+                WHERE
+                    USR_CMT_AUTHOR = USER_ID AND TCK_CMT_TICKET = ?';
+        return $this->_db->fetchAll($sql, array((int)$idTicket));
+    }
 }

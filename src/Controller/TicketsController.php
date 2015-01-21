@@ -236,14 +236,63 @@ class TicketsController implements ControllerProviderInterface
     }
 
     public function view(Application $app, Request $request) {
+        $userId = $app['session']->get('user');
+        $userId = $userId['id'];
+
         $ticketsModel = new TicketsModel($app);
         $id = (int) $request->get('id', 0);
 
         $ticket = $ticketsModel->getTicket($id);
+        $comments = $ticketsModel->getComments($id);
+
+        $form = $app['form.factory']->createBuilder('form')
+            ->add(
+                'comment', 'textarea', array(
+                    'label' => 'Comment',
+                    'attr' => array('class'=>'form-control'),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 5))
+                    )
+                )
+            )
+            ->add(
+                'Add comment', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $ticketsModel->addComment($data, $userId, $id);
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'Comment added'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate(
+                    '/tickets/view/',
+                    array('id' => $id)
+                ),
+                301
+            );
+        }
 
         return $app['twig']->render(
             'tickets/view.twig',
-            array('ticket' => $ticket[0])
+            array('ticket' => $ticket[0],
+                  'form' => $form->createView(),
+                  'comments' => $comments
+            )
         );
     }
 
