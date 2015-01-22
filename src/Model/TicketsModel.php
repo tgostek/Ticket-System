@@ -298,6 +298,17 @@ class TicketsModel
         return $this->_db->fetchAll($sql, array((int)$idTicket));
     }
 
+    public function getComment($idComment)
+    {
+        $sql = 'SELECT
+                    CMT_CREATION_DATE, CMT_VALUE,
+                    USER_ID, USER_NAME, USER_SURNAME
+                FROM
+                    COMMENT, USER
+                WHERE
+                    USR_CMT_AUTHOR = USER_ID AND CMT_ID = ?';
+        return $this->_db->fetchAll($sql, array((int)$idComment));
+    }
 
     public function changeStatus($data, $idUser, $idTicket, $oldStatus)
     {
