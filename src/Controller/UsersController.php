@@ -95,18 +95,4 @@ class UsersController implements ControllerProviderInterface
             'users/show.twig', array('userData' => $userData)
         );
     }
-
-    public function getAllUsers()
-    {
-        $sql = '
-              SELECT
-                  *
-              FROM
-                  USER
-              ';
-
-        $res = $this->_db->fetchAll($sql);
-
-        return $res;
-    }
 }

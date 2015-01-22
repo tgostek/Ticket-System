@@ -189,15 +189,19 @@ class TicketsController implements ControllerProviderInterface
                 $ticketId = $ticketsModel->addTicket($data, $userId);
 
                 $files = $request->files->get($form->getName());
-                $path = dirname(dirname(dirname(__FILE__))).'/web/media';
 
-                $filesModel = new FilesModel($app);
-                $originalFilename = $files['file']->getClientOriginalName();
-                $newFilename = $filesModel->createName($originalFilename);
 
-                $files['file']->move($path, $newFilename);
-                $fileId = $filesModel->saveFile($newFilename);
-                $filesModel->addFileToTicket($fileId,$ticketId);
+                if ($files['file'] != NULL) {
+                    $path = dirname(dirname(dirname(__FILE__))) . '/web/media';
+
+                    $filesModel = new FilesModel($app);
+                    $originalFilename = $files['file']->getClientOriginalName();
+                    $newFilename = $filesModel->createName($originalFilename);
+
+                    $files['file']->move($path, $newFilename);
+                    $fileId = $filesModel->saveFile($newFilename);
+                    $filesModel->addFileToTicket($fileId, $ticketId);
+                }
             } catch (Exception $e) {
                 $app['session']
                     ->getFlashBag()
