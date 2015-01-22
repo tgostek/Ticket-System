@@ -398,20 +398,20 @@ class TicketsModel
             if ($tmp['type'] == 'ADDITION') {
 
             } elseif ($tmp['type'] == 'STATUS') {
-                $tmp['oldStatus'] = $this->getStatusById($action['OLD_VALUE']);
-                $tmp['newStatus'] = $this->getStatusById($action['ACTUAL_VALUE']);
+                $tmp['oldStatus'] = $this->getStatusById($action['ACT_PREVIOUS_VALUE']);
+                $tmp['newStatus'] = $this->getStatusById($action['ACT_ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'QUEUE') {
-                $tmp['oldQueue'] = $this->getQueueById($action['OLD_VALUE']);
-                $tmp['newQueue'] = $this->getQueueById($action['ACTUAL_VALUE']);
+                $tmp['oldQueue'] = $this->getQueueById($action['ACT_PREVIOUS_VALUE']);
+                $tmp['newQueue'] = $this->getQueueById($action['ACT_ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'PRIORITY') {
-                $tmp['oldPriority'] = $this->getPriorityById($action['OLD_VALUE']);
-                $tmp['newPriority'] = $this->getPriorityById($action['ACTUAL_VALUE']);
+                $tmp['oldPriority'] = $this->getPriorityById($action['ACT_PREVIOUS_VALUE']);
+                $tmp['newPriority'] = $this->getPriorityById($action['ACT_ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'REPIN') {
-                $tmp['oldOwner'] = $this->_usersModel->getUserById($action['OLD_VALUE']);
+                $tmp['oldOwner'] = $this->_usersModel->getUserById($action['ACT_PREVIOUS_VALUE']);
                 if(empty($tmp['oldOwner'])) {
                     $tmp['oldOwner'] = 'nobody';
                 }
-                $tmp['newOwner'] = $this->_usersModel->getUserById($action['ACTUAL_VALUE']);
+                $tmp['newOwner'] = $this->_usersModel->getUserById($action['ACT_ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'COMMENT') {
                 $tmp['comment'] = $this->getComment($action['CMT_COMMENT']);
             }
