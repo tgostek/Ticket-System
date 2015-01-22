@@ -240,6 +240,7 @@ class UsersModel
 
         $users = array();
 
+        $users['nobody'] = 'nobody';
         foreach ($res as $user) {
             $users[$user['USER_ID']] = $user['USER_NAME'] . ' ' . $user['USER_SURNAME'];
         }

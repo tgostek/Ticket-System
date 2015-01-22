@@ -434,7 +434,7 @@ class TicketsController implements ControllerProviderInterface
         $repinForm = $app['form.factory']->createBuilder('form')
             ->add(
                 'status', 'choice', array(
-                    'label' => 'Status',
+                    'label' => 'User',
                     'choices' => $users,
                     'attr' => array('class'=>'form-control'),
                     'constraints' => array(new Assert\NotBlank())
