@@ -442,5 +442,13 @@ class TicketsModel
 
         return $res['PRT_VALUE'];
     }
+
+    public function acceptTicket($idTicket, $idUser)
+    {
+        $sql = "UPDATE TICKET SET USR_TCK_OWNER = ? WHERE TCK_ID = ?";
+        $this->_db->executeQuery($sql, array($idUser, $idTicket));
+        //$this->_addActionFlow($idTicket, 'REPIN', $idUser, $oldOwner, $data['owner']);
+
+    }
 }
 

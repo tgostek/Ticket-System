@@ -497,6 +497,37 @@ class TicketsController implements ControllerProviderInterface
                 301
             );
         }
+
+        $acceptForm = $app['form.factory']->createBuilder('form')
+            ->add(
+                'Accept', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+        $acceptForm->handleRequest($request);
+
+        if ($acceptForm->isValid()) {
+            $ticketsModel->acceptTicket($id, $userId);
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'You accepted this ticket'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate(
+                    '/tickets/view/',
+                    array('id' => $id)
+                ),
+                301
+            );
+        }
+
         return $app['twig']->render(
             'tickets/view.twig',
             array('ticket' => $ticket[0],
@@ -505,6 +536,7 @@ class TicketsController implements ControllerProviderInterface
                   'priorityForm' => $priorityForm->createView(),
                   'statusForm' => $statusForm->createView(),
                   'repinForm' => $repinForm->createView(),
+                  'acceptForm' => $acceptForm->createView(),
                   'actions' => $actions,
                   'isAuthor' => $isAuthor,
                   'isOwner' => $isOwner,

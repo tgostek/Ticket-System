@@ -57,7 +57,13 @@
     </div>
 
     {% if ticket.USR_TCK_OWNER is null %}
-        <button type="button" class="btn btn-default btn-lg">Accept</button>
+        <div class="row">
+            <div class="col-xs-6">
+                <form action="#" method="post">
+                    {{ form_widget(acceptForm) }}
+                </form>
+            </div>
+        </div>
     {% endif %}
 
     {% if isAuthor %}
