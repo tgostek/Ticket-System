@@ -218,6 +218,23 @@ class TicketsModel
         return $this->_db->fetchAll($sql);
     }
 
+    public function getPossibleStatuses()
+    {
+        $sql = 'SELECT
+                    *
+                FROM
+                    STATUS';
+
+        $res = $this->_db->fetchAll($sql);
+
+        $statuses = array();
+
+        foreach ($res as $status) {
+            $statuses[$status['STS_ID']] = $status['STS_VALUE'];
+        }
+        return $statuses;
+    }
+
     public function getStatuses()
     {
         $sql = 'SELECT
