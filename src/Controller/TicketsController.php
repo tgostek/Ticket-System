@@ -248,7 +248,12 @@ class TicketsController implements ControllerProviderInterface
         $id = (int) $request->get('id', 0);
 
         $ticket = $ticketsModel->getTicket($id);
+
+
         $comments = $ticketsModel->getComments($id);
+        $actions = $ticketsModel->getActionFlow($id);
+
+
 
         $isAuthor = false;
         $isOwner = false;

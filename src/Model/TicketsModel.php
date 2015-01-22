@@ -305,7 +305,9 @@ class TicketsModel
             throw new TicketException();
         }else {
             $sql = "UPDATE TICKET SET STS_TCK_STATUS = ? WHERE TCK_ID = ?";
-            return $this->_db->executeQuery($sql, array($data['status'], $idTicket));
+            $this->_db->executeQuery($sql, array($data['status'], $idTicket));
+
+            $this->_addActionFlow($idTicket, 'STATUS', $idUser, $oldStatus, $data['status']);
         }
     }
 
@@ -315,7 +317,9 @@ class TicketsModel
             throw new TicketException();
         }else {
             $sql = "UPDATE TICKET SET QUE_QUEUE = ? WHERE TCK_ID = ?";
-            return $this->_db->executeQuery($sql, array($data['queue'], $idTicket));
+            $this->_db->executeQuery($sql, array($data['queue'], $idTicket));
+
+            $this->_addActionFlow($idTicket, 'QUEUE', $idUser, $oldQueue, $data['queue']);
         }
     }
 
@@ -325,7 +329,8 @@ class TicketsModel
             throw new TicketException();
         }else {
             $sql = "UPDATE TICKET SET PRT_TCK_PRIORITY = ? WHERE TCK_ID = ?";
-            return $this->_db->executeQuery($sql, array($data['priority'], $idTicket));
+            $this->_db->executeQuery($sql, array($data['priority'], $idTicket));
+            $this->_addActionFlow($idTicket, 'PRIORITY', $idUser, $oldPriority, $data['priority']);
         }
     }
 
@@ -342,5 +347,41 @@ class TicketsModel
         $date = date('Y-m-d H:i:s');
         $sql = 'INSERT INTO ACTION_FLOW (ACT_DATE, ACT_PREVIOUS_VALUE, ACT_ACTUAL_VALUE, TCK_TICKET, USR_CHANGE_AUTHOR, TYP_ACTION_TYPE,  CMT_COMMENT) VALUES (?,?,?,?,?,?,?)';
         return $this->_db->executeQuery($sql, array($date, $oldValue, $newValue, $idTicket, $idChangeAuthor, $types[$type], $idComment));
+    }
+
+    public function getActionFlow($idTicket) {
+        $sql = 'SELECT
+                    *
+                FROM
+                    ACTION_FLOW, ACTION_TYPE
+                WHERE
+                    TCK_TICKET = ? AND TYP_ACTION_TYPE=TYP_ID';
+        $flow = $this->_db->fetchAll($sql, array((int)$idTicket));
+
+        $actions = array();
+
+        foreach ($flow as $action) {
+            $tmp = array();
+            $tmp['type'] = $action['TYP_VALUE'];
+            $tmp['date'] = $action['ACT_DATE'];
+            $tmp['comunicate'] = $action['TYP_COMUNICATE'];
+            $tmp['author'] = $action['USR_CHANGE_AUTHOR'];
+
+            if ($tmp['type'] == 'ADDITION') {
+
+            } elseif ($tmp['type'] == 'STATUS') {
+                //pobieramy 2 statusy
+            } elseif ($tmp['type'] == 'QUEUE') {
+
+            } elseif ($tmp['type'] == 'PRIORITY') {
+
+            } elseif ($tmp['type'] == 'REPIN') {
+
+            } elseif ($tmp['type'] == 'COMMENT') {
+
+            }
+        }
+
+        die();
     }
 }
