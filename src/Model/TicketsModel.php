@@ -408,6 +408,9 @@ class TicketsModel
                 $tmp['newPriority'] = $this->getPriorityById($action['ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'REPIN') {
                 $tmp['oldOwner'] = $this->_usersModel->getUserById($action['OLD_VALUE']);
+                if(empty($tmp['oldOwner'])) {
+                    $tmp['oldOwner'] = 'nobody';
+                }
                 $tmp['newOwner'] = $this->_usersModel->getUserById($action['ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'COMMENT') {
                 $tmp['comment'] = $this->getComment($action['CMT_COMMENT']);
@@ -447,7 +450,7 @@ class TicketsModel
     {
         $sql = "UPDATE TICKET SET USR_TCK_OWNER = ? WHERE TCK_ID = ?";
         $this->_db->executeQuery($sql, array($idUser, $idTicket));
-        //$this->_addActionFlow($idTicket, 'REPIN', $idUser, $oldOwner, $data['owner']);
+        $this->_addActionFlow($idTicket, 'REPIN', $idUser, null, $idUser);
 
     }
 }
