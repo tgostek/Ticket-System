@@ -385,7 +385,8 @@ class TicketsModel
                 FROM
                     ACTION_FLOW, ACTION_TYPE
                 WHERE
-                    TCK_TICKET = ? AND TYP_ACTION_TYPE=TYP_ID';
+                    TCK_TICKET = ? AND TYP_ACTION_TYPE=TYP_ID
+                ORDER BY ACT_ID    ';
         $flow = $this->_db->fetchAll($sql, array((int)$idTicket));
 
         $actions = array();
@@ -422,6 +423,7 @@ class TicketsModel
             $actions[] = $tmp;
             unset($tmp);
         }
+        
         return $actions;
     }
 
