@@ -305,7 +305,7 @@ class TicketsController implements ControllerProviderInterface
 
         $priorityForm = $app['form.factory']->createBuilder('form')
             ->add(
-                'status', 'choice', array(
+                'priority', 'choice', array(
                     'label' => 'Priority',
                     'choices' => $priorities,
                     'attr' => array('class'=>'form-control'),
@@ -323,7 +323,7 @@ class TicketsController implements ControllerProviderInterface
 
         if ($priorityForm->isValid()) {
             $data = $priorityForm->getData();
-            //$ticketsModel->changeStatus($data, $userId, $id);
+            $ticketsModel->changePriority($data, $userId, $id);
             $app['session']
                 ->getFlashBag()
                 ->add(
@@ -347,7 +347,7 @@ class TicketsController implements ControllerProviderInterface
 
         $queueForm = $app['form.factory']->createBuilder('form')
             ->add(
-                'status', 'choice', array(
+                'queue', 'choice', array(
                     'label' => 'Queue',
                     'choices' => $queues,
                     'attr' => array('class'=>'form-control'),
@@ -365,7 +365,8 @@ class TicketsController implements ControllerProviderInterface
 
         if ($queueForm->isValid()) {
             $data = $queueForm->getData();
-            //$ticketsModel->changeStatus($data, $userId, $id);
+
+            $ticketsModel->changeQueue($data, $userId, $id);
             $app['session']
                 ->getFlashBag()
                 ->add(
@@ -408,7 +409,7 @@ class TicketsController implements ControllerProviderInterface
 
         if ($statusForm->isValid()) {
             $data = $statusForm->getData();
-            //$ticketsModel->changeStatus($data, $userId, $id);
+            $ticketsModel->changeStatus($data, $userId, $id);
             $app['session']
                 ->getFlashBag()
                 ->add(
