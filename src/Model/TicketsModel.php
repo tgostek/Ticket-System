@@ -118,8 +118,8 @@ class TicketsModel
         }else{
             $date = date('Y-m-d H:i:s');
 
-            $sql = 'INSERT INTO TICKET (TCK_CREATION_DATE, TCK_CLOSED_DATE, TCK_TITLE, TCK_DESC, USR_TCK_OWNER, USR_TCK_AUTHOR, STS_TCK_STATUS, PRT_TCK_PRIORITY, QUE_QUEUE) VALUES (?,?,?,?,?,?,?,?,?)';
-            $this->_db->executeQuery($sql, array($date, NULL, $data['title'], $data['desc'], $userId, $userId, 1, $data['priority'], $data['queue']));
+            $sql = 'INSERT INTO TICKET (TCK_CREATION_DATE, TCK_CLOSED_DATE, TCK_TITLE, TCK_DESC, USR_TCK_AUTHOR, STS_TCK_STATUS, PRT_TCK_PRIORITY, QUE_QUEUE) VALUES (?,?,?,?,?,?,?,?)';
+            $this->_db->executeQuery($sql, array($date, NULL, $data['title'], $data['desc'], $userId, 1, $data['priority'], $data['queue']));
 
             return $this->_db->lastInsertId();
         }

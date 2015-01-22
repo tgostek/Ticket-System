@@ -245,6 +245,15 @@ class TicketsController implements ControllerProviderInterface
         $ticket = $ticketsModel->getTicket($id);
         $comments = $ticketsModel->getComments($id);
 
+        $isAuthor = false;
+        $isOwner = false;
+
+        if($ticket[0]['USR_TCK_OWNER'] == $userId) {
+            $isOwner = true;
+        }
+        if($ticket[0]['USR_TCK_AUTHOR'] == $userId) {
+            $isAuthor = true;
+        }
         $form = $app['form.factory']->createBuilder('form')
             ->add(
                 'comment', 'textarea', array(
@@ -291,7 +300,9 @@ class TicketsController implements ControllerProviderInterface
             'tickets/view.twig',
             array('ticket' => $ticket[0],
                   'form' => $form->createView(),
-                  'comments' => $comments
+                  'comments' => $comments,
+                  'isAuthor' => $isAuthor,
+                  'isOwner' => $isOwner,
             )
         );
     }
