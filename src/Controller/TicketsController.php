@@ -22,6 +22,7 @@ use Model\QueueDoesntExistException;
  * @uses Symfony\Component\HttpFoundation\Request
  * @uses Symfony\Component\Validator\Constraints as Assert
  * @uses Model\TicketsModel
+ * @uses Model\UsersModel
  */
  
 class TicketsController implements ControllerProviderInterface
@@ -426,6 +427,49 @@ class TicketsController implements ControllerProviderInterface
                 301
             );
         }
+
+        $usersModel = new UsersModel($app);
+        $users = $usersModel->getAllUsers();
+
+        $repinForm = $app['form.factory']->createBuilder('form')
+            ->add(
+                'status', 'choice', array(
+                    'label' => 'Status',
+                    'choices' => $users,
+                    'attr' => array('class'=>'form-control'),
+                    'constraints' => array(new Assert\NotBlank())
+                )
+            )
+            ->add(
+                'Repin user', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+
+        $repinForm->handleRequest($request);
+
+        if ($repinForm->isValid()) {
+            $data = $repinForm->getData();
+            //$ticketsModel->changeStatus($data, $userId, $id);
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'Owner changed'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate(
+                    '/tickets/view/',
+                    array('id' => $id)
+                ),
+                301
+            );
+        }
         return $app['twig']->render(
             'tickets/view.twig',
             array('ticket' => $ticket[0],
@@ -433,6 +477,7 @@ class TicketsController implements ControllerProviderInterface
                   'queueForm' => $queueForm->createView(),
                   'priorityForm' => $priorityForm->createView(),
                   'statusForm' => $statusForm->createView(),
+                  'repinForm' => $repinForm->createView(),
                   'comments' => $comments,
                   'isAuthor' => $isAuthor,
                   'isOwner' => $isOwner,

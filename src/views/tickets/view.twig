@@ -99,16 +99,14 @@
             </div>
             <div class="col-xs-6">
                 <form action="#" method="post">
-                    {{ form_widget(priorityForm) }}
+                    {{ form_widget(statusForm) }}
                 </form>
             </div>
         </div>
         <div class="row">
-            <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default">Repin user</button>
-                </div>
-            </div>
+            <form action="#" method="post">
+                {{ form_widget(repinForm) }}
+            </form>
         </div>
     {% endif %}
 
