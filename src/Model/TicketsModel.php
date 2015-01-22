@@ -54,6 +54,10 @@ class TicketsModel
                   PRIORITY ON TICKET.PRT_TCK_PRIORITY = PRIORITY.PRT_ID
               INNER JOIN
                   STATUS ON TICKET.STS_TCK_STATUS = STATUS.STS_ID
+              INNER JOIN
+                  TICKET_has_ATTACHMENT ON TICKET_has_ATTACHMENT.TCK_TICKET = TICKET.TCK_ID
+              INNER JOIN
+                  ATTACHMENT ON ATTACHMENT.ATT_ID = TICKET_has_ATTACHMENT.ATT_ATTACHMENT
               WHERE
                   TCK_ID = ?
               ';
@@ -61,6 +65,26 @@ class TicketsModel
         $res = $this->_db->fetchAll($sql, array((string) $id));
         if (empty($res)) {
             throw new TicketException('Ticket doesn\'t exist');
+        }
+        return $res;
+    }
+
+    public function getTicketAttachment($id)
+    {
+        $sql = '
+        SELECT
+            *
+        FROM
+            ATTACHMENT
+        INNER JOIN
+            TICKET_has_ATTACHMENT ON TICKET_has_ATTACHMENT.TCK_TICKET = ?
+        WHERE
+            ATTACHMENT.ATT_ID = TICKET_has_ATTACHMENT.ATT_ATTACHMENT
+        ';
+
+        $res = $this->_db->fetchAll($sql, array((string) $id));
+        if (empty($res)) {
+            throw new TicketException('Ticket has no attachment');
         }
         return $res;
     }
