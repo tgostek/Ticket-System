@@ -290,7 +290,7 @@ class TicketsModel
     }
 
 
-    public function changeStatus($data, $idUser, $idTicket)
+    public function changeStatus($data, $idUser, $idTicket, $oldStatus)
     {
         if(empty($data)) {
             throw new TicketException();
@@ -300,7 +300,7 @@ class TicketsModel
         }
     }
 
-    public function changeQueue($data, $idUser, $idTicket)
+    public function changeQueue($data, $idUser, $idTicket, $oldQueue)
     {
         if(empty($data)) {
             throw new TicketException();
@@ -310,7 +310,7 @@ class TicketsModel
         }
     }
 
-    public function changePriority($data, $idUser, $idTicket)
+    public function changePriority($data, $idUser, $idTicket, $oldPriority)
     {
         if(empty($data)) {
             throw new TicketException();

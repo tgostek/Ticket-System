@@ -323,7 +323,7 @@ class TicketsController implements ControllerProviderInterface
 
         if ($priorityForm->isValid()) {
             $data = $priorityForm->getData();
-            $ticketsModel->changePriority($data, $userId, $id);
+            $ticketsModel->changePriority($data, $userId, $id, $ticket[0]['PRT_TCK_PRIORITY']);
             $app['session']
                 ->getFlashBag()
                 ->add(
@@ -366,7 +366,9 @@ class TicketsController implements ControllerProviderInterface
         if ($queueForm->isValid()) {
             $data = $queueForm->getData();
 
-            $ticketsModel->changeQueue($data, $userId, $id);
+            $ticketsModel->changeQueue($data, $userId, $id, $ticket[0]['QUE_QUEUE']);
+            var_dump($ticket[0]['QUE_QUEUE']);
+            die();
             $app['session']
                 ->getFlashBag()
                 ->add(
@@ -409,7 +411,7 @@ class TicketsController implements ControllerProviderInterface
 
         if ($statusForm->isValid()) {
             $data = $statusForm->getData();
-            $ticketsModel->changeStatus($data, $userId, $id);
+            $ticketsModel->changeStatus($data, $userId, $id, $ticket[0]['STS_TCK_STATUS']);
             $app['session']
                 ->getFlashBag()
                 ->add(
