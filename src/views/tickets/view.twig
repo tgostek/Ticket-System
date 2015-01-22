@@ -129,7 +129,7 @@
                 There are no comments
             </p>
         {% endif %}
-        <form action="#" method="post">
+        <form action="#" {{ form_enctype(commentForm) }} method="post">
             {{ form_widget(commentForm) }}
         </form>
     </div>

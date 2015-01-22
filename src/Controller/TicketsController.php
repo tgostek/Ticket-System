@@ -270,6 +270,11 @@ class TicketsController implements ControllerProviderInterface
                     )
                 )
             )
+            ->add('file', 'file', array(
+                'label' => 'Choose file',
+                'constraints' => array(new Assert\Image()),
+                'required' => false
+            ))
             ->add(
                 'Add comment', 'submit', array(
                     'attr' => array('class'=>'btn btn-default btn-lg')
@@ -281,7 +286,22 @@ class TicketsController implements ControllerProviderInterface
 
         if ($commentForm->isValid()) {
             $data = $commentForm->getData();
-            $ticketsModel->addComment($data, $userId, $id);
+            $commentId = $ticketsModel->addComment($data, $userId, $id);
+
+            $files = $request->files->get($commentForm->getName());
+
+            if ($files['file'] != NULL) {
+                $path = dirname(dirname(dirname(__FILE__))) . '/web/media';
+
+                $filesModel = new FilesModel($app);
+                $originalFilename = $files['file']->getClientOriginalName();
+                $newFilename = $filesModel->createName($originalFilename);
+
+                $files['file']->move($path, $newFilename);
+                $fileId = $filesModel->saveFile($newFilename);
+                $filesModel->addTicketToComment($fileId, $commentId);
+            }
+
             $app['session']
                 ->getFlashBag()
                 ->add(

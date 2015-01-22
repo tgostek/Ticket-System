@@ -42,6 +42,12 @@ class FilesModel
         $this->_db->executeQuery($sql, array($ticketId, $fileId));
     }
 
+    public function addTicketToComment($fileId, $commentId)
+    {
+        $sql = 'INSERT INTO `COMMENT_has_ATTACHMENT` (`CMT_COMMENT`, `ATT_ATTACHMENT`) VALUES (?,?)';
+        $this->_db->executeQuery($sql, array($commentId, $fileId));
+    }
+
     protected function _randomString($length)
     {
         $string = '';

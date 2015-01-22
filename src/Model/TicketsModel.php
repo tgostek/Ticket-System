@@ -275,6 +275,8 @@ class TicketsModel
         $this->_db->executeQuery(
             $sql, array($data['comment'], $date, $idTicket, $idUser)
         );
+
+        return $this->_db->lastInsertId();
     }
 
     public function getComments($idTicket)
