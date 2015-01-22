@@ -359,7 +359,7 @@ class TicketsModel
             return $this->_db->executeQuery($sql, array($data['owner'], $idTicket));
         }
     }
-    
+
     public function getActionFlow($idTicket) {
         $sql = 'SELECT
                     *
@@ -394,6 +394,30 @@ class TicketsModel
         }
 
         die();
+    }
+
+    public function getStatusById($id)
+    {
+        $sql = 'SELECT STS_VALUE FROM STATUS WHERE STS_ID = ?';
+        $res = $this->_db->fetchAssoc($sql, array((string) $id));
+
+        return $res['STS_VALUE'];
+    }
+
+    public function getQueueById($id)
+    {
+        $sql = 'SELECT QUE_NAME FROM QUEUE WHERE QUE_ID = ?';
+        $res = $this->_db->fetchAssoc($sql, array((string) $id));
+
+        return $res['QUE_NAME'];
+    }
+
+    public function getPriorityById($id)
+    {
+        $sql = 'SELECT PRT_VALUE FROM PRIORITY WHERE PRT_ID = ?';
+        $res = $this->_db->fetchAssoc($sql, array((string) $id));
+
+        return $res['PRT_VALUE'];
     }
 }
 

@@ -81,6 +81,14 @@ class UsersModel
         return $user;
     }
 
+    public function getUserById($id)
+    {
+        $sql = 'SELECT USER_NAME, USER_SURNAME FROM USER WHERE USER_ID = ?';
+        $res = $this->_db->fetchAssoc($sql, array((string) $id));
+
+        return $res['USER_NAME'] . ' ' . $res['USER_SURNAME'];
+    }
+
      /**
      * Get users login.
      *
