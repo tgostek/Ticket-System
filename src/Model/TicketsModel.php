@@ -343,4 +343,14 @@ class TicketsModel
         $sql = 'INSERT INTO ACTION_FLOW (ACT_DATE, ACT_PREVIOUS_VALUE, ACT_ACTUAL_VALUE, TCK_TICKET, USR_CHANGE_AUTHOR, TYP_ACTION_TYPE,  CMT_COMMENT) VALUES (?,?,?,?,?,?,?)';
         return $this->_db->executeQuery($sql, array($date, $oldValue, $newValue, $idTicket, $idChangeAuthor, $types[$type], $idComment));
     }
+
+    public function repinUser($data, $idUser, $idTicket, $oldOwner)
+    {
+        if(empty($data)) {
+            throw new TicketException();
+        }else {
+            $sql = "UPDATE TICKET SET USR_TCK_OWNER = ? WHERE TCK_ID = ?";
+            return $this->_db->executeQuery($sql, array($data['owner'], $idTicket));
+        }
+    }
 }

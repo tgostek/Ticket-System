@@ -456,7 +456,7 @@ class TicketsController implements ControllerProviderInterface
 
         $repinForm = $app['form.factory']->createBuilder('form')
             ->add(
-                'status', 'choice', array(
+                'owner', 'choice', array(
                     'label' => 'User',
                     'choices' => $users,
                     'attr' => array('class'=>'form-control'),
@@ -474,7 +474,7 @@ class TicketsController implements ControllerProviderInterface
 
         if ($repinForm->isValid()) {
             $data = $repinForm->getData();
-            //$ticketsModel->changeStatus($data, $userId, $id);
+            $ticketsModel->repinUser($data, $userId, $id, $ticket[0]['USR_TCK_OWNER']);
             $app['session']
                 ->getFlashBag()
                 ->add(
