@@ -145,15 +145,6 @@ class TicketsModel
         }
     }
 
-    public function changeTicketStatus($data){
-        if(empty($data)) {
-            throw new TicketException();
-        }else{
-            $sql = "UPDATE TICKET SET STS_TCK_STATUS = ? WHERE TCK_ID = ?";
-            return $this->_db->executeQuery($sql, array($data['status'], $data['id']));
-        }
-    }
-
 /**
 * Get possible priorities.
 *
@@ -296,5 +287,21 @@ class TicketsModel
                 WHERE
                     USR_CMT_AUTHOR = USER_ID AND TCK_CMT_TICKET = ?';
         return $this->_db->fetchAll($sql, array((int)$idTicket));
+    }
+
+
+    public function changeTicketStatus($data){
+        if(empty($data)) {
+            throw new TicketException();
+        }else{
+            $sql = "UPDATE TICKET SET STS_TCK_STATUS = ? WHERE TCK_ID = ?";
+            return $this->_db->executeQuery($sql, array($data['status'], $data['id']));
+        }
+    }
+
+    public function changeTicketQueue($idTicket, $newQueue, $oldQueue, $idUser)
+    {
+        $sql = "UPDATE TICKET SET QUE_QUEUE = ? WHERE TCK_ID = ?";
+        return $this->_db->executeQuery($sql, array($newQueue, $idTicket));
     }
 }

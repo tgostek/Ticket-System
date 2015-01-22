@@ -238,6 +238,11 @@ class UsersModel
 
         $res = $this->_db->fetchAll($sql);
 
-        return $res;
+        $users = array();
+
+        foreach ($res as $user) {
+            $users[$user['USER_ID']] = $user['USER_NAME'] . ' ' . $user['USER_SURNAME'];
+        }
+        return $users;
     }
 }
