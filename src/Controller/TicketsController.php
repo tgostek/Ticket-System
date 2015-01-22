@@ -254,7 +254,7 @@ class TicketsController implements ControllerProviderInterface
         if($ticket[0]['USR_TCK_AUTHOR'] == $userId) {
             $isAuthor = true;
         }
-        $form = $app['form.factory']->createBuilder('form')
+        $commentForm = $app['form.factory']->createBuilder('form')
             ->add(
                 'comment', 'textarea', array(
                     'label' => 'Comment',
@@ -272,10 +272,10 @@ class TicketsController implements ControllerProviderInterface
             )
             ->getForm();
 
-        $form->handleRequest($request);
+        $commentForm->handleRequest($request);
 
-        if ($form->isValid()) {
-            $data = $form->getData();
+        if ($commentForm->isValid()) {
+            $data = $commentForm->getData();
             $ticketsModel->addComment($data, $userId, $id);
             $app['session']
                 ->getFlashBag()
@@ -296,10 +296,96 @@ class TicketsController implements ControllerProviderInterface
             );
         }
 
+        $priorities = $ticketsModel->getPossiblePriorities();
+
+        $priorityForm = $app['form.factory']->createBuilder('form')
+            ->add(
+                'status', 'choice', array(
+                    'label' => 'Priority',
+                    'choices' => $priorities,
+                    'attr' => array('class'=>'form-control'),
+                    'constraints' => array(new Assert\NotBlank())
+                )
+            )
+            ->add(
+                'Change priority', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+
+        $priorityForm->handleRequest($request);
+
+        if ($priorityForm->isValid()) {
+            $data = $priorityForm->getData();
+            //$ticketsModel->changeStatus($data, $userId, $id);
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'Priority changed'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate(
+                    '/tickets/view/',
+                    array('id' => $id)
+                ),
+                301
+            );
+        }
+
+        $queues = $ticketsModel->getPossibleQueues();
+
+        $queueForm = $app['form.factory']->createBuilder('form')
+            ->add(
+                'status', 'choice', array(
+                    'label' => 'Queue',
+                    'choices' => $queues,
+                    'attr' => array('class'=>'form-control'),
+                    'constraints' => array(new Assert\NotBlank())
+                )
+            )
+            ->add(
+                'Change queues', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+
+        $queueForm->handleRequest($request);
+
+        if ($queueForm->isValid()) {
+            $data = $queueForm->getData();
+            //$ticketsModel->changeStatus($data, $userId, $id);
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'Queue changed'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate(
+                    '/tickets/view/',
+                    array('id' => $id)
+                ),
+                301
+            );
+        }
+
         return $app['twig']->render(
             'tickets/view.twig',
             array('ticket' => $ticket[0],
-                  'form' => $form->createView(),
+                  'commentForm' => $commentForm->createView(),
+                  'queueForm' => $queueForm->createView(),
+                  'priorityForm' => $priorityForm->createView(),
                   'comments' => $comments,
                   'isAuthor' => $isAuthor,
                   'isOwner' => $isOwner,

@@ -61,14 +61,21 @@
     {% endif %}
 
     {% if isAuthor %}
-        <div class="btn-group btn-group-justified" role="group" aria-label="...">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default">Change queue</button>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <form action="#" method="post">
+                    {{ form_widget(queueForm) }}
+                </form>
             </div>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default">Change priority</button>
+            <div class="col-xs-6">
+                <form action="#" method="post">
+                    {{ form_widget(priorityForm) }}
+                </form>
             </div>
         </div>
+
+
     {% endif %}
 
     {% if isOwner %}
@@ -105,7 +112,7 @@
             </p>
         {% endif %}
         <form action="#" method="post">
-            {{ form_widget(form) }}
+            {{ form_widget(commentForm) }}
         </form>
     </div>
 {% endblock %}
