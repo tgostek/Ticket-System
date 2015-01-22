@@ -2,6 +2,7 @@
 namespace Model;
 
 use Silex\Application;
+use Model\UsersModel;
 
 class QueueDoesntExistException extends \Exception 
 {
@@ -29,7 +30,8 @@ class TicketsModel
      * @var $_db Doctrine\DBAL
      */
     protected $_db;
-    
+
+    protected $_usersModel;
     /**
      * Class constructor.
      *
@@ -39,6 +41,7 @@ class TicketsModel
     public function __construct(Application $app)
     {
         $this->_db = $app['db'];
+        $this->_usersModel = new UsersModel($app);
     }
 
     public function getTicket($id)
@@ -307,7 +310,9 @@ class TicketsModel
                     COMMENT, USER
                 WHERE
                     USR_CMT_AUTHOR = USER_ID AND CMT_ID = ?';
-        return $this->_db->fetchAll($sql, array((int)$idComment));
+        $comment = $this->_db->fetchAll($sql, array((int)$idComment));
+
+        return $comment[0];
     }
 
     public function changeStatus($data, $idUser, $idTicket, $oldStatus)
@@ -367,7 +372,8 @@ class TicketsModel
             throw new TicketException();
         }else {
             $sql = "UPDATE TICKET SET USR_TCK_OWNER = ? WHERE TCK_ID = ?";
-            return $this->_db->executeQuery($sql, array($data['owner'], $idTicket));
+            $this->_db->executeQuery($sql, array($data['owner'], $idTicket));
+            $this->_addActionFlow($idTicket, 'REPIN', $idUser, $oldOwner, $data['owner']);
         }
     }
 
@@ -387,24 +393,30 @@ class TicketsModel
             $tmp['type'] = $action['TYP_VALUE'];
             $tmp['date'] = $action['ACT_DATE'];
             $tmp['comunicate'] = $action['TYP_COMUNICATE'];
-            $tmp['author'] = $action['USR_CHANGE_AUTHOR'];
+            $tmp['author'] = $this->_usersModel->getUserById($action['USR_CHANGE_AUTHOR']);
 
             if ($tmp['type'] == 'ADDITION') {
 
             } elseif ($tmp['type'] == 'STATUS') {
-                //pobieramy 2 statusy
+                $tmp['oldStatus'] = $this->getStatusById($action['OLD_VALUE']);
+                $tmp['newStatus'] = $this->getStatusById($action['ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'QUEUE') {
-
+                $tmp['oldQueue'] = $this->getQueueById($action['OLD_VALUE']);
+                $tmp['newQueue'] = $this->getQueueById($action['ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'PRIORITY') {
-
+                $tmp['oldPriority'] = $this->getPriorityById($action['OLD_VALUE']);
+                $tmp['newPriority'] = $this->getPriorityById($action['ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'REPIN') {
-
+                $tmp['oldOwner'] = $this->_usersModel->getUserById($action['OLD_VALUE']);
+                $tmp['newOwner'] = $this->_usersModel->getUserById($action['ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'COMMENT') {
-
+                $tmp['comment'] = $this->getComment($action['CMT_COMMENT']);
             }
-        }
 
-        die();
+            $actions[] = $tmp;
+            unset($tmp);
+        }
+        return $actions;
     }
 
     public function getStatusById($id)

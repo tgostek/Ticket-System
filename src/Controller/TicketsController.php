@@ -250,7 +250,6 @@ class TicketsController implements ControllerProviderInterface
         $ticket = $ticketsModel->getTicket($id);
 
 
-        $comments = $ticketsModel->getComments($id);
         $actions = $ticketsModel->getActionFlow($id);
 
 
@@ -506,7 +505,7 @@ class TicketsController implements ControllerProviderInterface
                   'priorityForm' => $priorityForm->createView(),
                   'statusForm' => $statusForm->createView(),
                   'repinForm' => $repinForm->createView(),
-                  'comments' => $comments,
+                  'actions' => $actions,
                   'isAuthor' => $isAuthor,
                   'isOwner' => $isOwner,
             )

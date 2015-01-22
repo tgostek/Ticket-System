@@ -112,21 +112,43 @@
 
     <div class="comments-container">
         <div class="page-header">
-            <h1><small>Discussion</small></h1>
+            <h1><small>Ticket flow</small></h1>
         </div>
-        {%  if comments|length > 0 %}
-
-            {% for comment in comments %}
-                <div class="jumbotron">
-                    <span class="author label label-default"><a href="#" >{{ comment.USER_NAME|e }} {{ comment.USER_SURNAME|e }}</a></span>
-                    <span class="date label label-primary">{{ comment.CMT_CREATION_DATE|e }}</span>
-                    <p>{{ comment.CMT_VALUE }}</p>
-                </div>
+        {%  if actions|length > 0 %}
+            {% for action in actions %}
+                {% if action.type == 'ADDITION' %}
+                    <div class="alert alert-success" role="alert">
+                        {{ action.author|e }} {{ action.comunicate|e }}
+                    </div>
+                {% elseif  action.type == 'STATUS'%}
+                    <div class="alert alert-success" role="alert">
+                        {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldStatus }} -> {{ action.newStatus }}
+                    </div>
+                {% elseif  action.type == 'QUEUE'%}
+                    <div class="alert alert-success" role="alert">
+                        {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldQueue }} -> {{ action.newQueue }}
+                    </div>
+                {% elseif  action.type == 'PRIORITY'%}
+                    <div class="alert alert-success" role="alert">
+                        {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldPriority }} -> {{ action.newPriority }}
+                    </div>
+                {% elseif  action.type == 'REPIN'%}
+                    <div class="alert alert-success" role="alert">
+                        {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldUser }} -> {{ action.newUser }}
+                    </div>
+                {% elseif  action.type == 'COMMENT'%}
+                    <div class="jumbotron">
+                        <span class="author label label-default"><a href="#" >{{ action.author|e }} {{ action.comunicate|e }}</a></span>
+                        <span class="date label label-primary">{{ action.comment.CMT_CREATION_DATE|e }}</span>
+                        <p>{{ action.comment.CMT_VALUE }}</p>
+                    </div>
+                {% endif %}
             {% endfor %}
+
 
         {% else %}
             <p>
-                There are no comments
+                There are no flow
             </p>
         {% endif %}
         <form action="#" {{ form_enctype(commentForm) }} method="post">
