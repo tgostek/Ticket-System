@@ -140,7 +140,7 @@
                     </div>
                 {% elseif  action.type == 'REPIN'%}
                     <div class="alert alert-info" role="alert">
-                        {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldUser }} -> {{ action.newUser }}
+                        {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldOwner }} -> {{ action.newOwner }}
                     </div>
                 {% elseif  action.type == 'COMMENT'%}
                     <div class="jumbotron">

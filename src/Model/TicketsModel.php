@@ -371,9 +371,11 @@ class TicketsModel
         if(empty($data)) {
             throw new TicketException();
         }else {
-            $sql = "UPDATE TICKET SET USR_TCK_OWNER = ? WHERE TCK_ID = ?";
-            $this->_db->executeQuery($sql, array($data['owner'], $idTicket));
-            $this->_addActionFlow($idTicket, 'REPIN', $idUser, $oldOwner, $data['owner']);
+            if ($oldOwner != $data['owner']) {
+                $sql = "UPDATE TICKET SET USR_TCK_OWNER = ? WHERE TCK_ID = ?";
+                $this->_db->executeQuery($sql, array($data['owner'], $idTicket));
+                $this->_addActionFlow($idTicket, 'REPIN', $idUser, $oldOwner, $data['owner']);
+            }
         }
     }
 
@@ -407,9 +409,10 @@ class TicketsModel
                 $tmp['oldPriority'] = $this->getPriorityById($action['ACT_PREVIOUS_VALUE']);
                 $tmp['newPriority'] = $this->getPriorityById($action['ACT_ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'REPIN') {
-                $tmp['oldOwner'] = $this->_usersModel->getUserById($action['ACT_PREVIOUS_VALUE']);
-                if(empty($tmp['oldOwner'])) {
+                if(empty($action['ACT_PREVIOUS_VALUE'])) {
                     $tmp['oldOwner'] = 'nobody';
+                } else {
+                    $tmp['oldOwner'] = $this->_usersModel->getUserById($action['ACT_PREVIOUS_VALUE']);
                 }
                 $tmp['newOwner'] = $this->_usersModel->getUserById($action['ACT_ACTUAL_VALUE']);
             } elseif ($tmp['type'] == 'COMMENT') {
