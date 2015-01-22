@@ -54,10 +54,6 @@ class TicketsModel
                   PRIORITY ON TICKET.PRT_TCK_PRIORITY = PRIORITY.PRT_ID
               INNER JOIN
                   STATUS ON TICKET.STS_TCK_STATUS = STATUS.STS_ID
-              INNER JOIN
-                  TICKET_has_ATTACHMENT ON TICKET_has_ATTACHMENT.TCK_TICKET = TICKET.TCK_ID
-              INNER JOIN
-                  ATTACHMENT ON ATTACHMENT.ATT_ID = TICKET_has_ATTACHMENT.ATT_ATTACHMENT
               WHERE
                   TCK_ID = ?
               ';
