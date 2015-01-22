@@ -391,8 +391,6 @@ class TicketsController implements ControllerProviderInterface
             $data = $queueForm->getData();
 
             $ticketsModel->changeQueue($data, $userId, $id, $ticket[0]['QUE_QUEUE']);
-            var_dump($ticket[0]['QUE_QUEUE']);
-            die();
             $app['session']
                 ->getFlashBag()
                 ->add(
