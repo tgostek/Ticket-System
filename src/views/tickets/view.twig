@@ -79,15 +79,35 @@
     {% endif %}
 
     {% if isOwner %}
-        <div class="btn-group btn-group-justified" role="group" aria-label="...">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default">Repin user</button>
+        <div class="row">
+            <div class="col-xs-6">
+                <form action="#" method="post">
+                    {{ form_widget(queueForm) }}
+                </form>
             </div>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default">Change queue</button>
+            <div class="col-xs-6">
+                <form action="#" method="post">
+                    {{ form_widget(priorityForm) }}
+                </form>
             </div>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default">Change status</button>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <form action="#" method="post">
+                    {{ form_widget(queueForm) }}
+                </form>
+            </div>
+            <div class="col-xs-6">
+                <form action="#" method="post">
+                    {{ form_widget(priorityForm) }}
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default">Repin user</button>
+                </div>
             </div>
         </div>
     {% endif %}

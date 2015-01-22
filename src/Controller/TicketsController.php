@@ -384,12 +384,55 @@ class TicketsController implements ControllerProviderInterface
             );
         }
 
+
+        $statusses = $ticketsModel->getPossibleStatuses();
+
+        $statusForm = $app['form.factory']->createBuilder('form')
+            ->add(
+                'status', 'choice', array(
+                    'label' => 'Status',
+                    'choices' => $statusses,
+                    'attr' => array('class'=>'form-control'),
+                    'constraints' => array(new Assert\NotBlank())
+                )
+            )
+            ->add(
+                'Change status', 'submit', array(
+                    'attr' => array('class'=>'btn btn-default btn-lg')
+                )
+            )
+            ->getForm();
+
+        $statusForm->handleRequest($request);
+
+        if ($statusForm->isValid()) {
+            $data = $statusForm->getData();
+            //$ticketsModel->changeStatus($data, $userId, $id);
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'success',
+                        'content' => 'Status changed'
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate(
+                    '/tickets/view/',
+                    array('id' => $id)
+                ),
+                301
+            );
+        }
         return $app['twig']->render(
             'tickets/view.twig',
             array('ticket' => $ticket[0],
                   'commentForm' => $commentForm->createView(),
                   'queueForm' => $queueForm->createView(),
                   'priorityForm' => $priorityForm->createView(),
+                  'statusForm' => $statusForm->createView(),
                   'comments' => $comments,
                   'isAuthor' => $isAuthor,
                   'isOwner' => $isOwner,
