@@ -290,18 +290,21 @@ class TicketsModel
     }
 
 
-    public function changeTicketStatus($data){
-        if(empty($data)) {
-            throw new TicketException();
-        }else{
-            $sql = "UPDATE TICKET SET STS_TCK_STATUS = ? WHERE TCK_ID = ?";
-            return $this->_db->executeQuery($sql, array($data['status'], $data['id']));
-        }
+    public function changeTicketStatus($idTicket, $newStatus, $oldStatus, $idUser)
+    {
+        $sql = "UPDATE TICKET SET STS_TCK_STATUS = ? WHERE TCK_ID = ?";
+        return $this->_db->executeQuery($sql, array($newStatus, $idTicket));
     }
 
     public function changeTicketQueue($idTicket, $newQueue, $oldQueue, $idUser)
     {
         $sql = "UPDATE TICKET SET QUE_QUEUE = ? WHERE TCK_ID = ?";
         return $this->_db->executeQuery($sql, array($newQueue, $idTicket));
+    }
+
+    public function changeTicketPriority($idTicket, $newPriority, $oldPriority, $idUser)
+    {
+        $sql = "UPDATE TICKET SET PRT_TCK_PRIORITY = ? WHERE TCK_ID = ?";
+        return $this->_db->executeQuery($sql, array($newPriority, $idTicket));
     }
 }
