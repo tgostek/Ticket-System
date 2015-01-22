@@ -141,7 +141,11 @@ class TicketsModel
             $sql = 'INSERT INTO TICKET (TCK_CREATION_DATE, TCK_CLOSED_DATE, TCK_TITLE, TCK_DESC, USR_TCK_AUTHOR, STS_TCK_STATUS, PRT_TCK_PRIORITY, QUE_QUEUE) VALUES (?,?,?,?,?,?,?,?)';
             $this->_db->executeQuery($sql, array($date, NULL, $data['title'], $data['desc'], $userId, 1, $data['priority'], $data['queue']));
 
-            return $this->_db->lastInsertId();
+            $lastId = $this->_db->lastInsertId();
+
+            $this->_addActionFlow($lastId, 'ADDITION', $userId);
+
+            return $lastId;
         }
     }
 
@@ -275,6 +279,8 @@ class TicketsModel
         $this->_db->executeQuery(
             $sql, array($data['comment'], $date, $idTicket, $idUser)
         );
+        $lastId = $this->_db->lastInsertId();
+        $this->_addActionFlow($idTicket, 'COMMENT', $idUser, null, null, $lastId);
     }
 
     public function getComments($idTicket)
@@ -318,5 +324,20 @@ class TicketsModel
             $sql = "UPDATE TICKET SET PRT_TCK_PRIORITY = ? WHERE TCK_ID = ?";
             return $this->_db->executeQuery($sql, array($data['priority'], $idTicket));
         }
+    }
+
+    private function _addActionFlow($idTicket, $type, $idChangeAuthor, $oldValue=null, $newValue=null, $idComment=null) {
+
+        $types = array(
+            'ADDITION' => 1,
+            'STATUS' => 2,
+            'QUEUE' => 3,
+            'PRIORITY' => 4,
+            'REPIN' => 5,
+            'COMMENT' => 6
+        );
+        $date = date('Y-m-d H:i:s');
+        $sql = 'INSERT INTO ACTION_FLOW (ACT_DATE, ACT_PREVIOUS_VALUE, ACT_ACTUAL_VALUE, TCK_TICKET, USR_CHANGE_AUTHOR, TYP_ACTION_TYPE,  CMT_COMMENT) VALUES (?,?,?,?,?,?,?)';
+        return $this->_db->executeQuery($sql, array($date, $oldValue, $newValue, $idTicket, $idChangeAuthor, $types[$type], $idComment));
     }
 }
