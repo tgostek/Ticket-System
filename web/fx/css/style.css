@@ -117,3 +117,6 @@
 .single-ticket #form:nth-child(odd) {
     margin-left: 100px;
 }
+.repin-btn {
+    margin-left: 50px;
+}

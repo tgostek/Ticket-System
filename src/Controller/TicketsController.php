@@ -593,7 +593,7 @@ class TicketsController implements ControllerProviderInterface
             )
             ->add(
                 'Repin user', 'submit', array(
-                    'attr' => array('class'=>'btn btn-default btn-lg')
+                    'attr' => array('class'=>'btn btn-default repin-btn')
                 )
             )
             ->getForm();
