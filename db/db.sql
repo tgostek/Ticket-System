@@ -261,6 +261,16 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `TICKET_SYSTEM`.`USER`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `TICKET_SYSTEM`;
+INSERT INTO `TICKET_SYSTEM`.`USER` (`USER_ID`, `USER_LOGIN`, `USER_NAME`, `USER_SURNAME`, `USER_MAIL`, `USER_PASSWORD`, `USER_ROLE`) VALUES (NULL, 'Administrator', 'Administrator', 'Serwisu', NULL, 'Q7CTCaoL4C8s2fMx1lvQLEK6Up8utT0c1qp9gI/GkoujQWQEmZ+ff1oihQ3YMsYNyXXDrYh6Wry+3bHevIbeOg==', 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `TICKET_SYSTEM`.`STATUS`
 -- -----------------------------------------------------
 START TRANSACTION;
