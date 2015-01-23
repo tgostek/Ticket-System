@@ -372,6 +372,9 @@ class TicketsModel
             throw new TicketException();
         }else {
             if ($oldOwner != $data['owner']) {
+                if ($data['owner'] == 'nobody') {
+                    $data['owner'] = NULL;
+                }
                 $sql = "UPDATE TICKET SET USR_TCK_OWNER = ? WHERE TCK_ID = ?";
                 $this->_db->executeQuery($sql, array($data['owner'], $idTicket));
                 $this->_addActionFlow($idTicket, 'REPIN', $idUser, $oldOwner, $data['owner']);
