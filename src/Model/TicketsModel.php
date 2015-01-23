@@ -465,6 +465,10 @@ class TicketsModel
 
     private function _addActionFlow($idTicket, $type, $idChangeAuthor, $oldValue=null, $newValue=null, $idComment=null) {
 
+        if (!empty($oldValue) && !empty($newValue) && $oldValue == $newValue) {
+            return;
+        }
+
         $types = array(
             'ADDITION' => 1,
             'STATUS' => 2,

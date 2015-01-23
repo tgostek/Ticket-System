@@ -356,6 +356,7 @@ class TicketsController implements ControllerProviderInterface
 
         try {
             $ticket = $ticketsModel->getTicket($id);
+            $att = $ticketsModel->getTicketAttachment($id);
         } catch (\Exception $e) {
             $app['session']
                 ->getFlashBag()
@@ -397,7 +398,6 @@ class TicketsController implements ControllerProviderInterface
         $commentForm = $app['form.factory']->createBuilder('form')
             ->add(
                 'comment', 'textarea', array(
-                    'label' => 'Comment',
                     'attr' => array('class'=>'form-control'),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -412,7 +412,7 @@ class TicketsController implements ControllerProviderInterface
             ))
             ->add(
                 'Add comment', 'submit', array(
-                    'attr' => array('class'=>'btn btn-default btn-lg')
+                    'attr' => array('class'=>'btn btn-default')
                 )
             )
             ->getForm();
@@ -461,7 +461,6 @@ class TicketsController implements ControllerProviderInterface
         $priorityForm = $app['form.factory']->createBuilder('form')
             ->add(
                 'priority', 'choice', array(
-                    'label' => 'Priority',
                     'choices' => $priorities,
                     'attr' => array('class'=>'form-control'),
                     'constraints' => array(new Assert\NotBlank())
@@ -469,7 +468,7 @@ class TicketsController implements ControllerProviderInterface
             )
             ->add(
                 'Change priority', 'submit', array(
-                    'attr' => array('class'=>'btn btn-default btn-lg')
+                    'attr' => array('class'=>'btn btn-default')
                 )
             )
             ->getForm();
@@ -503,7 +502,6 @@ class TicketsController implements ControllerProviderInterface
         $queueForm = $app['form.factory']->createBuilder('form')
             ->add(
                 'queue', 'choice', array(
-                    'label' => 'Queue',
                     'choices' => $queues,
                     'attr' => array('class'=>'form-control'),
                     'constraints' => array(new Assert\NotBlank())
@@ -511,7 +509,7 @@ class TicketsController implements ControllerProviderInterface
             )
             ->add(
                 'Change queues', 'submit', array(
-                    'attr' => array('class'=>'btn btn-default btn-lg')
+                    'attr' => array('class'=>'btn btn-default')
                 )
             )
             ->getForm();
@@ -547,7 +545,6 @@ class TicketsController implements ControllerProviderInterface
         $statusForm = $app['form.factory']->createBuilder('form')
             ->add(
                 'status', 'choice', array(
-                    'label' => 'Status',
                     'choices' => $statusses,
                     'attr' => array('class'=>'form-control'),
                     'constraints' => array(new Assert\NotBlank())
@@ -555,7 +552,7 @@ class TicketsController implements ControllerProviderInterface
             )
             ->add(
                 'Change status', 'submit', array(
-                    'attr' => array('class'=>'btn btn-default btn-lg')
+                    'attr' => array('class'=>'btn btn-default')
                 )
             )
             ->getForm();
@@ -589,7 +586,6 @@ class TicketsController implements ControllerProviderInterface
         $repinForm = $app['form.factory']->createBuilder('form')
             ->add(
                 'owner', 'choice', array(
-                    'label' => 'User',
                     'choices' => $users,
                     'attr' => array('class'=>'form-control'),
                     'constraints' => array(new Assert\NotBlank())

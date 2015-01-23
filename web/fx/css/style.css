@@ -102,3 +102,18 @@
 .core-group{
     float: right;
 }
+.single-ticket label{
+    display: none;
+}
+.single-ticket #form div {
+    display: inline-block;
+    width: 100px;
+    float: left;
+}
+
+.single-ticket #form {
+    margin-top: 50px;
+}
+.single-ticket #form:nth-child(odd) {
+    margin-left: 100px;
+}

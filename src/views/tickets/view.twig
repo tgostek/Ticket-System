@@ -3,6 +3,9 @@
 {% block title %}{{ ticket.TCK_TITLE }}{% endblock %}
 
 {% block content %}
+    <div class="single-ticket">
+
+
     <div class="panel panel-info author-panel">
         <div class="panel-heading">Author</div>
 
@@ -70,12 +73,12 @@
 
         <div class="row">
             <div class="col-xs-6">
-                <form action="#" method="post">
+                <form action="#" method="post" class="form-inline">
                     {{ form_widget(queueForm) }}
                 </form>
             </div>
             <div class="col-xs-6">
-                <form action="#" method="post">
+                <form action="#" method="post" class="form-inline">
                     {{ form_widget(priorityForm) }}
                 </form>
             </div>
@@ -87,24 +90,19 @@
     {% if isOwner %}
         <div class="row">
             <div class="col-xs-6">
-                <form action="#" method="post">
+                <form action="#" method="post" class="form-inline">
                     {{ form_widget(queueForm) }}
                 </form>
             </div>
             <div class="col-xs-6">
-                <form action="#" method="post">
+                <form action="#" method="post" class="form-inline">
                     {{ form_widget(priorityForm) }}
                 </form>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-6">
-                <form action="#" method="post">
-                    {{ form_widget(queueForm) }}
-                </form>
-            </div>
-            <div class="col-xs-6">
-                <form action="#" method="post">
+                <form action="#" method="post" class="form-inline">
                     {{ form_widget(statusForm) }}
                 </form>
             </div>
@@ -124,22 +122,27 @@
             {% for action in actions %}
                 {% if action.type == 'ADDITION' %}
                     <div class="alert alert-success" role="alert">
+                        <span class="date label label-primary">{{ action.date }}</span>
                         {{ action.author|e }} {{ action.comunicate|e }}
                     </div>
                 {% elseif  action.type == 'STATUS'%}
                     <div class="alert alert-info" role="alert">
+                        <span class="date label label-primary">{{ action.date }}</span>
                         {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldStatus }} -> {{ action.newStatus }}
                     </div>
                 {% elseif  action.type == 'QUEUE'%}
                     <div class="alert alert-info" role="alert">
+                        <span class="date label label-primary">{{ action.date }}</span>
                         {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldQueue }} -> {{ action.newQueue }}
                     </div>
                 {% elseif  action.type == 'PRIORITY'%}
                     <div class="alert alert-warning" role="alert">
+                        <span class="date label label-primary">{{ action.date }}</span>
                         {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldPriority }} -> {{ action.newPriority }}
                     </div>
                 {% elseif  action.type == 'REPIN'%}
                     <div class="alert alert-info" role="alert">
+                        <span class="date label label-primary">{{ action.date }}</span>
                         {{ action.author|e }} {{ action.comunicate|e }} {{ action.oldOwner }} -> {{ action.newOwner }}
                     </div>
                 {% elseif  action.type == 'COMMENT'%}
@@ -160,5 +163,7 @@
         <form action="#" {{ form_enctype(commentForm) }} method="post">
             {{ form_widget(commentForm) }}
         </form>
+    </div>
+
     </div>
 {% endblock %}
