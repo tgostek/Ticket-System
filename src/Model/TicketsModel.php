@@ -418,7 +418,13 @@ class TicketsModel
                 } else {
                     $tmp['oldOwner'] = $this->_usersModel->getUserById($action['ACT_PREVIOUS_VALUE']);
                 }
-                $tmp['newOwner'] = $this->_usersModel->getUserById($action['ACT_ACTUAL_VALUE']);
+                if (empty($action['ACT_ACTUAL_VALUE'])) {
+                    $tmp['newOwner'] = 'nobody';
+                } else {
+                    $tmp['newOwner'] = $this->_usersModel->getUserById($action['ACT_ACTUAL_VALUE']);
+                }
+
+
             } elseif ($tmp['type'] == 'COMMENT') {
                 $tmp['comment'] = $this->getComment($action['CMT_COMMENT']);
             }
