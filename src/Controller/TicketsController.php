@@ -356,7 +356,6 @@ class TicketsController implements ControllerProviderInterface
 
         try {
             $ticket = $ticketsModel->getTicket($id);
-            $att = $ticketsModel->getTicketAttachment($id);
         } catch (\Exception $e) {
             $app['session']
                 ->getFlashBag()
@@ -374,7 +373,7 @@ class TicketsController implements ControllerProviderInterface
             );
 
         }
-
+        $att = $ticketsModel->getTicketAttachment($id);
 
         $ticketAuthor = $usersModel->getUserById($ticket[0]['USR_TCK_AUTHOR']);
         if (empty($ticket[0]['USR_TCK_OWNER'])) {
@@ -665,7 +664,8 @@ class TicketsController implements ControllerProviderInterface
                   'isAuthor' => $isAuthor,
                   'isOwner' => $isOwner,
                   'author' => $ticketAuthor,
-                  'owner' => $ticketOwner
+                  'owner' => $ticketOwner,
+                  'att'  => $att
             )
         );
     }

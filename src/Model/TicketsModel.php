@@ -83,7 +83,7 @@ class TicketsModel
 
         $res = $this->_db->fetchAssoc($sql, array((string) $id));
         if (empty($res)) {
-            throw new TicketException('Ticket has no attachment');
+            return null;
         }
         return "/web/media/" .$res['ATT_NAME'];
     }
@@ -423,7 +423,7 @@ class TicketsModel
 
         $res = $this->_db->fetchAssoc($sql, array((string) $id));
         if (empty($res)) {
-            throw new TicketException('Ticket has no attachment');
+            return null;
         }
         return "/web/media/" .$res['ATT_NAME'];
     }
