@@ -27,7 +27,7 @@
 
                     <ul class="dropdown-menu" role="menu">
                         {% for queue in queues %}
-                        <li><a href="#">{{ queue }}</a></li>
+                        <li><a href="{{ url('/tickets/queue/', {'queue': queue}) }}">{{ queue }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>

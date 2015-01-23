@@ -98,6 +98,11 @@ class TicketsController implements ControllerProviderInterface
             '/tickets/view/'
         );
 
+        $ticketsController->match(
+            '/queue/{queue}', array($this, 'queue')
+        )->bind(
+            '/tickets/queue/'
+        );
         return $ticketsController;
     }    
     
@@ -136,6 +141,38 @@ class TicketsController implements ControllerProviderInterface
             'tickets/tickets.twig',
             array('tickets' => $tickets,
                   'label' => 'Yours tickets'
+            )
+        );
+    }
+
+    public function queue(Application $app, Request $request)
+    {
+        $queue = $request->get('queue', 0);
+
+        $ticketsModel = new TicketsModel($app);
+
+        $queueId = $ticketsModel->getQueueByName($queue);
+        if(empty($queueId)) {
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'error',
+                        'content' => "Queue doesn't exist"
+                    )
+                );
+            return $app->redirect(
+                $app['url_generator']->generate('/tickets/'),
+                301
+            );
+        }
+        $tickets = $ticketsModel->getTicketsByQueue($queueId);
+
+        return $app['twig']->render(
+            'tickets/tickets.twig',
+            array('tickets' => $tickets,
+                'label' => 'Yours tickets'
             )
         );
     }

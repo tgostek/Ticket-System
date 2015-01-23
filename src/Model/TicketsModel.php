@@ -110,6 +110,29 @@ class TicketsModel
         return $res;
     }
 
+    public function getTicketsByQueue($id, $limit = null)
+    {
+        $sql = '
+              SELECT
+                  *
+              FROM
+                  TICKET
+              INNER JOIN
+                  QUEUE ON TICKET.QUE_QUEUE = QUEUE.QUE_ID
+              INNER JOIN
+                  PRIORITY ON TICKET.PRT_TCK_PRIORITY = PRIORITY.PRT_ID
+              WHERE
+                  QUE_QUEUE = ?
+              ';
+
+        if (!empty($limit)) {
+            $sql .= 'LIMIT ' . $limit;
+        }
+        $res = $this->_db->fetchAll($sql,  array((string) $id));
+
+        return $res;
+    }
+
     public function getAuthorsTickets($authorId, $limit = null)
     {
         $sql = '
