@@ -61,6 +61,13 @@ class TicketsController implements ControllerProviderInterface
             '/tickets/assigned'
         );
 
+
+        $ticketsController->match(
+            '/all', array($this, 'all')
+        )->bind(
+            '/tickets/all'
+        );
+
         $ticketsController->match(
             '/core', array($this, 'core')
         )->bind(
@@ -102,13 +109,20 @@ class TicketsController implements ControllerProviderInterface
      */
     public function index(Application $app)
     {
+        $userId = $app['session']->get('user');
+        $userId = $userId['id'];
         $ticketsModel = new TicketsModel($app);
-        $allTickets = $ticketsModel->getAllTickets();
+        $allTickets = $ticketsModel->getAllTickets(5);
+        $authorTickets = $ticketsModel->getAuthorsTickets($userId, 5);
+        $ownerTickets = $ticketsModel->getOwnersTickets($userId, 5);
 
         return $app['twig']->render(
             'tickets/index.twig',
-            array('allTickets' => $allTickets)
-            );
+            array('allTickets' => $allTickets,
+                  'authorTickets' => $authorTickets,
+                  'ownerTickets' => $ownerTickets,
+            )
+        );
     }
 
     public function mine(Application $app)
@@ -137,6 +151,19 @@ class TicketsController implements ControllerProviderInterface
             'tickets/tickets.twig',
             array('tickets' => $tickets,
                 'label' => 'Tickets assigned to you'
+            )
+        );
+    }
+
+    public function all(Application $app)
+    {
+        $ticketsModel = new TicketsModel($app);
+        $tickets = $ticketsModel->getAllTickets();
+
+        return $app['twig']->render(
+            'tickets/tickets.twig',
+            array('tickets' => $tickets,
+                'label' => 'Free tickets'
             )
         );
     }

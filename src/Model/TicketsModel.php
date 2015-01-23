@@ -88,7 +88,7 @@ class TicketsModel
         return $res;
     }
 
-    public function getAllTickets()
+    public function getAllTickets($limit = null)
     {
         $sql = '
               SELECT
@@ -99,14 +99,18 @@ class TicketsModel
                   QUEUE ON TICKET.QUE_QUEUE = QUEUE.QUE_ID
               INNER JOIN
                   PRIORITY ON TICKET.PRT_TCK_PRIORITY = PRIORITY.PRT_ID
+              WHERE
+                  USR_TCK_OWNER IS NULL
               ';
-
+        if (!empty($limit)) {
+            $sql .= 'LIMIT ' . $limit;
+        }
         $res = $this->_db->fetchAll($sql);
 
         return $res;
     }
 
-    public function getAuthorsTickets($authorId)
+    public function getAuthorsTickets($authorId, $limit = null)
     {
         $sql = '
             SELECT
@@ -120,11 +124,13 @@ class TicketsModel
             WHERE
                 USR_TCK_AUTHOR = ?
             ';
-
+        if (!empty($limit)) {
+            $sql .= 'LIMIT ' . $limit;
+        }
         return $this->_db->fetchAll($sql, array((string) $authorId));
     }
 
-    public function getOwnersTickets($ownerId)
+    public function getOwnersTickets($ownerId, $limit = null)
     {
         $sql = '
             SELECT
@@ -138,7 +144,9 @@ class TicketsModel
             WHERE
                 USR_TCK_OWNER = ?
             ';
-
+        if (!empty($limit)) {
+            $sql .= 'LIMIT ' . $limit;
+        }
         return $this->_db->fetchAll($sql, array((string) $ownerId));
     }
 
