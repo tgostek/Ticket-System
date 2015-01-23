@@ -72,7 +72,7 @@ class TicketsModel
     {
         $sql = '
         SELECT
-            *
+            ATT_NAME
         FROM
             ATTACHMENT
         INNER JOIN
@@ -81,11 +81,11 @@ class TicketsModel
             ATTACHMENT.ATT_ID = TICKET_has_ATTACHMENT.ATT_ATTACHMENT
         ';
 
-        $res = $this->_db->fetchAll($sql, array((string) $id));
+        $res = $this->_db->fetchAssoc($sql, array((string) $id));
         if (empty($res)) {
             throw new TicketException('Ticket has no attachment');
         }
-        return $res;
+        return "/web/media/" .$res['ATT_NAME'];
     }
 
     public function getAllTickets($limit = null)
@@ -406,6 +406,26 @@ class TicketsModel
         $comment = $this->_db->fetchAll($sql, array((int)$idComment));
 
         return $comment[0];
+    }
+
+    public function getCommentAttachment($id)
+    {
+        $sql = '
+                SELECT
+                    ATT_NAME
+                FROM
+                    ATTACHMENT
+                INNER JOIN
+                    COMMENT_has_ATTACHMENT ON COMMENT_has_ATTACHMENT.CMT_COMMENT = ?
+                WHERE
+                    ATTACHMENT.ATT_ID = COMMENT_has_ATTACHMENT.ATT_ATTACHMENT
+            ';
+
+        $res = $this->_db->fetchAssoc($sql, array((string) $id));
+        if (empty($res)) {
+            throw new TicketException('Ticket has no attachment');
+        }
+        return "/web/media/" .$res['ATT_NAME'];
     }
 
     public function changeStatus($data, $idUser, $idTicket, $oldStatus)
