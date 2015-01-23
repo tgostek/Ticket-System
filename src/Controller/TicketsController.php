@@ -689,18 +689,18 @@ class TicketsController implements ControllerProviderInterface
             $statusData = $statusForm->getData();
             try {
                 $ticketsModel->addStatus($statusData);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $app['session']
                     ->getFlashBag()
                     ->add(
                         'message',
                         array(
                             'type' => 'error',
-                            'content' => 'Ups.. Something is wrong.'
+                            'content' => $e->getMessage()
                         )
                     );
                 return $app->redirect(
-                    $app['url_generator']->generate('/tickets/'),
+                    $app['url_generator']->generate('/tickets/core'),
                     301
                 );
             }
@@ -756,18 +756,18 @@ class TicketsController implements ControllerProviderInterface
             $priorityData = $priorityForm->getData();
             try {
                 $ticketsModel->addPriority($priorityData);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $app['session']
                     ->getFlashBag()
                     ->add(
                         'message',
                         array(
                             'type' => 'error',
-                            'content' => 'Ups.. Something is wrong.'
+                            'content' => $e->getMessage()
                         )
                     );
                 return $app->redirect(
-                    $app['url_generator']->generate('/tickets/'),
+                    $app['url_generator']->generate('/tickets/core'),
                     301
                 );
             }
@@ -823,18 +823,18 @@ class TicketsController implements ControllerProviderInterface
             $queueData = $queueForm->getData();
             try {
                 $ticketsModel->addQueue($queueData);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $app['session']
                     ->getFlashBag()
                     ->add(
                         'message',
                         array(
                             'type' => 'error',
-                            'content' => 'Ups.. Something is wrong.'
+                            'content' => $e->getMessage()
                         )
                     );
                 return $app->redirect(
-                    $app['url_generator']->generate('/tickets/'),
+                    $app['url_generator']->generate('/tickets/core'),
                     301
                 );
             }

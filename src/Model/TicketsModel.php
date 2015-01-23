@@ -264,8 +264,26 @@ class TicketsModel
         if(empty($data)) {
             throw new TicketException();
         }else{
-            $sql = 'INSERT INTO STATUS (STS_VALUE, STS_IS_CLOSED) VALUES (?,?)';
-            return $this->_db->executeQuery($sql, array($data['value'], $data['isClosed']));
+            $select = 'SELECT
+                          COUNT(*)
+                       FROM
+                          STATUS
+                       WHERE
+                          STS_VALUE = ?
+
+
+                    ';
+            $res = $this->_db->fetchAssoc($select, array((string) $data['value']));
+
+            if($res['COUNT(*)'] > 0)
+            {
+                throw new TicketException('Status already exist');
+            }
+            else
+            {
+                $sql = 'INSERT INTO STATUS (STS_VALUE, STS_IS_CLOSED) VALUES (?,?)';
+                return $this->_db->executeQuery($sql, array($data['value'], $data['isClosed']));
+            }
         }
     }
 
@@ -274,8 +292,26 @@ class TicketsModel
         if(empty($data)) {
             throw new TicketException();
         }else{
-            $sql = 'INSERT INTO PRIORITY (PRT_VALUE) VALUES (?)';
-            return $this->_db->executeQuery($sql, array($data['value']));
+            $select = 'SELECT
+                          COUNT(*)
+                       FROM
+                          PRIORITY
+                       WHERE
+                          PRT_VALUE = ?
+
+
+                    ';
+            $res = $this->_db->fetchAssoc($select, array((string) $data['value']));
+
+            if($res['COUNT(*)'] > 0)
+            {
+                throw new TicketException('Priority already exist');
+            }
+            else
+            {
+                $sql = 'INSERT INTO PRIORITY (PRT_VALUE) VALUES (?)';
+                return $this->_db->executeQuery($sql, array($data['value']));
+            }
         }
     }
 
@@ -284,8 +320,26 @@ class TicketsModel
         if(empty($data)) {
             throw new TicketException();
         }else{
-            $sql = 'INSERT INTO QUEUE (QUE_NAME) VALUES (?)';
-            return $this->_db->executeQuery($sql, array($data['name']));
+            $select = 'SELECT
+                          COUNT(*)
+                       FROM
+                          QUEUE
+                       WHERE
+                          QUE_NAME = ?
+
+
+                    ';
+            $res = $this->_db->fetchAssoc($select, array((string) $data['name']));
+
+            if($res['COUNT(*)'] > 0)
+            {
+                throw new TicketException('Queue already exist');
+            }
+            else
+            {
+                $sql = 'INSERT INTO QUEUE (QUE_NAME) VALUES (?)';
+                return $this->_db->executeQuery($sql, array($data['name']));
+            }
         }
     }
 
