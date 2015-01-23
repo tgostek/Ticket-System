@@ -317,7 +317,26 @@ class TicketsController implements ControllerProviderInterface
 
         $id = (int) $request->get('id', 0);
 
-        $ticket = $ticketsModel->getTicket($id);
+        try {
+            $ticket = $ticketsModel->getTicket($id);
+        } catch (\Exception $e) {
+            $app['session']
+                ->getFlashBag()
+                ->add(
+                    'message',
+                    array(
+                        'type' => 'error',
+                        'content' => "Ticket doesn't exist"
+                    )
+                );
+
+            return $app->redirect(
+                $app['url_generator']->generate('/tickets/'),
+                301
+            );
+
+        }
+
 
         $ticketAuthor = $usersModel->getUserById($ticket[0]['USR_TCK_AUTHOR']);
         if (empty($ticket[0]['USR_TCK_OWNER'])) {
