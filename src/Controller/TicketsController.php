@@ -245,11 +245,18 @@ class TicketsController implements ControllerProviderInterface
         $userId = $userId['id'];
 
         $ticketsModel = new TicketsModel($app);
+        $usersModel = new UsersModel($app);
+
         $id = (int) $request->get('id', 0);
 
         $ticket = $ticketsModel->getTicket($id);
 
-
+        $ticketAuthor = $usersModel->getUserById($ticket[0]['USR_TCK_AUTHOR']);
+        if (empty($ticket[0]['USR_TCK_OWNER'])) {
+            $ticketOwner = 'nobody';
+        } else {
+            $ticketOwner = $usersModel->getUserById($ticket[0]['USR_TCK_OWNER']);
+        }
         $actions = $ticketsModel->getActionFlow($id);
 
 
@@ -453,7 +460,6 @@ class TicketsController implements ControllerProviderInterface
             );
         }
 
-        $usersModel = new UsersModel($app);
         $users = $usersModel->getAllUsers();
 
         $repinForm = $app['form.factory']->createBuilder('form')
@@ -538,6 +544,8 @@ class TicketsController implements ControllerProviderInterface
                   'actions' => $actions,
                   'isAuthor' => $isAuthor,
                   'isOwner' => $isOwner,
+                  'author' => $ticketAuthor,
+                  'owner' => $ticketOwner
             )
         );
     }
