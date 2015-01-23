@@ -58,10 +58,7 @@
             {{ ticket.TCK_DESC }}
 
             {% if att is not null %}
-
-
-                    <p><a href="http://tickets.localhost/web/media/n35dnju7jttjaa4els89znm6zs37hegn.png" download>Załącznik</a></p>
-
+                    <p><a href="{{ app.request.basepath }}{{ att }}" download>Załącznik</a></p>
             {% endif %}
         </div>
     </div>
@@ -157,6 +154,9 @@
                         <span class="author label label-default"><a href="#" >{{ action.author|e }} {{ action.comunicate|e }}</a></span>
                         <span class="date label label-primary">{{ action.comment.CMT_CREATION_DATE|e }}</span>
                         <p>{{ action.comment.CMT_VALUE }}</p>
+                        {% if action.comment.att is not null %}
+                            <p><a href="{{ app.request.basepath }}{{ action.comment.att }}" download>Załącznik</a></p>
+                        {% endif %}
                     </div>
                 {% endif %}
             {% endfor %}

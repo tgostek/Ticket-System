@@ -85,7 +85,7 @@ class TicketsModel
         if (empty($res)) {
             return null;
         }
-        return "/web/media/" .$res['ATT_NAME'];
+        return "/media/" .$res['ATT_NAME'];
     }
 
     public function getAllTickets($limit = null)
@@ -425,7 +425,7 @@ class TicketsModel
         if (empty($res)) {
             return null;
         }
-        return "/web/media/" .$res['ATT_NAME'];
+        return "/media/" .$res['ATT_NAME'];
     }
 
     public function changeStatus($data, $idUser, $idTicket, $oldStatus)
@@ -544,6 +544,7 @@ class TicketsModel
 
             } elseif ($tmp['type'] == 'COMMENT') {
                 $tmp['comment'] = $this->getComment($action['CMT_COMMENT']);
+                $tmp['comment']['att'] = $this->getCommentAttachment($action['CMT_COMMENT']);
             }
 
             $actions[] = $tmp;
