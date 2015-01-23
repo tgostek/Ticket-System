@@ -1,0 +1,37 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Ticket system{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <span class="label label-info">{{ label }}</span>
+            {%  if tickets|length > 0 %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Creation date</th>
+                        <th>Title</th>
+                        <th>Priority</th>
+                        <th>Queue</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.TCK_CREATION_DATE|e }}</td>
+                            <td><a href="{{ url('/tickets/view/', {'id': ticket.TCK_ID}) }}" title="Show more">{{ ticket.TCK_TITLE|length > 30 ? ticket.TCK_TITLE|slice(0, 30) ~ '...' : ticket.TCK_TITLE  }}</a></td>
+                            <td>{{ ticket.PRT_VALUE|e }}</td>
+                            <td>{{ ticket.QUE_NAME|e }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>
+                    No more tickets.
+                </p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

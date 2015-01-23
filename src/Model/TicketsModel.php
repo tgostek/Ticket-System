@@ -110,9 +110,13 @@ class TicketsModel
     {
         $sql = '
             SELECT
-            	*
-            FROM
-            	TICKET
+                  *
+              FROM
+                  TICKET
+              INNER JOIN
+                  QUEUE ON TICKET.QUE_QUEUE = QUEUE.QUE_ID
+              INNER JOIN
+                  PRIORITY ON TICKET.PRT_TCK_PRIORITY = PRIORITY.PRT_ID
             WHERE
                 USR_TCK_AUTHOR = ?
             ';
@@ -124,9 +128,13 @@ class TicketsModel
     {
         $sql = '
             SELECT
-            	*
-            FROM
-            	TICKET
+                  *
+              FROM
+                  TICKET
+              INNER JOIN
+                  QUEUE ON TICKET.QUE_QUEUE = QUEUE.QUE_ID
+              INNER JOIN
+                  PRIORITY ON TICKET.PRT_TCK_PRIORITY = PRIORITY.PRT_ID
             WHERE
                 USR_TCK_OWNER = ?
             ';

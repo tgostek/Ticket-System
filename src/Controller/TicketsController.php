@@ -50,6 +50,18 @@ class TicketsController implements ControllerProviderInterface
         );
 
         $ticketsController->match(
+            '/mine', array($this, 'mine')
+        )->bind(
+            '/tickets/mine'
+        );
+
+        $ticketsController->match(
+            '/assigned', array($this, 'assignedTo')
+        )->bind(
+            '/tickets/assigned'
+        );
+
+        $ticketsController->match(
             '/core', array($this, 'core')
         )->bind(
             '/tickets/core'
@@ -99,6 +111,35 @@ class TicketsController implements ControllerProviderInterface
             );
     }
 
+    public function mine(Application $app)
+    {
+        $userId = $app['session']->get('user');
+        $userId = $userId['id'];
+        $ticketsModel = new TicketsModel($app);
+        $tickets = $ticketsModel->getAuthorsTickets($userId);
+
+        return $app['twig']->render(
+            'tickets/tickets.twig',
+            array('tickets' => $tickets,
+                  'label' => 'Yours tickets'
+            )
+        );
+    }
+
+    public function assignedTo(Application $app)
+    {
+        $userId = $app['session']->get('user');
+        $userId = $userId['id'];
+        $ticketsModel = new TicketsModel($app);
+        $tickets = $ticketsModel->getOwnersTickets($userId);
+
+        return $app['twig']->render(
+            'tickets/tickets.twig',
+            array('tickets' => $tickets,
+                'label' => 'Tickets assigned to you'
+            )
+        );
+    }
     /**
      * Add new ticket.
      *
