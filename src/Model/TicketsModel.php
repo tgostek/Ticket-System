@@ -535,7 +535,15 @@ class TicketsModel
         $sql = "UPDATE TICKET SET USR_TCK_OWNER = ? WHERE TCK_ID = ?";
         $this->_db->executeQuery($sql, array($idUser, $idTicket));
         $this->_addActionFlow($idTicket, 'REPIN', $idUser, null, $idUser);
+    }
 
+
+    public function getQueueByName($name)
+    {
+        $sql = 'SELECT QUE_ID FROM QUEUE WHERE QUE_NAME = ?';
+        $res = $this->_db->fetchAssoc($sql, array((string) $name));
+
+        return $res['QUE_ID'];
     }
 }
 
